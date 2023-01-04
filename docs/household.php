@@ -48,7 +48,7 @@ $hhid = $_GET['id'];
     <meta property="og:url" content="http://pratikborsadiya.in/blog/vali-admin">
     <meta property="og:image" content="http://pratikborsadiya.in/blog/vali-admin/hero-social.png">
     <meta property="og:description" content="Vali is a responsive and free admin theme built with Bootstrap 4, SASS and PUG.js. It's fully customizable and modular.">
-    <title>BTO-House Hold Enrollment </title>
+    <title>CASHLESS - Beneficiary</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -134,7 +134,7 @@ $hhid = $_GET['id'];
         <li class="treeview is-expanded"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-th-list"></i><span class="app-menu__label">Tables</span><i class="treeview-indicator fa fa-angle-right"></i></a>
           <ul class="treeview-menu">
         
-            <li><a class="treeview-item" href="page1.php"><i class="icon fa fa-circle-o"></i>House Hold Enrollment</a></li>
+            <li><a class="treeview-item" href="page1.php"><i class="icon fa fa-circle-o"></i>Beneficiary Enrollment</a></li>
 
                 <li><a class="treeview-item" href="householdrequests.php"><i class="icon fa fa-circle-o"></i>Transactions</a></li>
 
@@ -163,7 +163,7 @@ $hhid = $_GET['id'];
     <main class="app-content">
       <div class="app-title">
         <div>
-          <font color="00CCFF"><h1><i class="fa fa-th-list"></i><b> HOUSE HOLD #<?php echo $hhid ?> PREVIEW</font></h1></b>
+          <font color="00CCFF"><h1><i class="fa fa-th-list"></i><b> Beneficiary #<?php echo $hhid ?> PREVIEW</font></h1></b>
           <p>Records below</p>      
         </div>
 
@@ -177,25 +177,11 @@ $hhid = $_GET['id'];
         </ul>
       </div>
 
-<button type="button" class="btn btn-success" data-toggle="modal" data-target="#add">+ Add Member </button>
- &emsp;
  <?php
 
 
 
-  $sql2 = "SELECT * from tbl_household WHERE hhid  = $hhid;";
-                     $result = $conn->query($sql2) or die($conn->error);
-                    
-                        // output data of each row
-                        $row = $result->fetch_assoc();
-
-                            
-                            $verified = $row['verified'];
- if ($verified =="Yes") {
-echo "<div title='This household is checked and verified' style='font-size: 24px;'><i class='fa fa-check-square' aria-hidden='true' style='color:green'></i></div>";
- }else{
- echo "<button type='button' class='btn btn-warning' data-toggle='modal' data-target='#verify'>✓ Verify Houshold </button>";
-}
+  
 ?>
 
 
@@ -221,36 +207,24 @@ echo "<div title='This household is checked and verified' style='font-size: 24px
                             $hremarks= "";
                             $htag= "";
 
-                  
-                    $sql = "SELECT * from tbl_people WHERE role = 'head' AND hhid =$hhid  ORDER BY hhid ASC limit 30";
+                  $hhid = $_GET['id'];
+                    $sql = "SELECT * from tbl_people where hhid = $hhid  ORDER BY hhid ASC limit 30";
                     $result = $conn->query($sql);
                     if ($result->num_rows > 0) {
                         // output data of each row
                         while($row = $result->fetch_assoc()) {
-                            $hid = $row['id'];
-                            $hlname= $row['lname'];
-                            $hfname= $row['fname'];
-                            $hmname= $row['mname'];
-                            $hreltohhhead= $row['relationship'];
-                            $hgender = $row['gender'];
-                            $hbday = $row['bday'];
-                            $hcivilstatus = $row['civilstatus'];
-                            $hplaceofbirth = $row['placeofbirth'];
-                            $hmnumber = $row['phone'];
-                            $hoccupation  = $row['work'];
-                            $hsalary = $row['salary'];
-                            $hhealthc = $row['health'];
-                            $hbeneof = $row['sector'];
-                            $hvaccinated= $row['vaccinated'];
-                            $hvaccine= $row['vaccine'];
-                            $hrole= $row['role'];
-                            $hstatus= $row['status'];
-                            $hremarks= $row['remarks'];
-                            $htag= $row['tag'];
-                            $hasbiz= $row['sme'];
-                            $wantbiz= $row['wantsme'];
-                            $lineofbiz= $row['lineofbiz'];
-                            $skillforz= $row['skillforz'];
+                            $beneid = $row['id'];
+                            $lname= $row['lname'];
+                            $fname= $row['fname'];
+                            $mname= $row['mname'];
+                            $xname= $row['xname'];
+                            $sector =$row ['sector'];
+                            $gender = $row['gender'];
+                            $bday = $row['bday'];
+                            $civilstatus = $row['civilstatus'];
+                            $placeofbirth = $row['placeofbirth'];
+                            $mnumber = $row['phone'];
+                            
 
 }
 
@@ -262,116 +236,94 @@ echo "<div title='This household is checked and verified' style='font-size: 24px
                   ?>
         <!--EDIT EDIT HEAD -->
 <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="edithead">
+  
+
   <div class="modal-dialog modal-xl">
-         <div class="modal-content">
+   
+       <div class="modal-content">
           <div class="tile">
-            <h3 class="tile-title">Edit House Hold Head <?php echo $hid; ?> </h3>
+            <h3 class="tile-title">Add a member</h3>
             <div class="tile-body">
                 <form method="post" role="form">
-                  <input class="form-control" type="text" placeholder="Last Name" name="editid" hidden value="<?php echo $hid; ?>">
-<!--SME-->
-                  <div class="row">
-                <div class="form-group col-md-3">
-                  <label class="control-label">Has business?</label>
-                  <select class="form-control" id="hasbiz" name="hasbiz" required>
-                  <option value="<?php echo $hreltohhhead; ?>"><?php echo $hasbiz; ?>
-                    
-                  </option>
-                  <option value="Yes">Yes</option>
-                  <option value="No">No</option></select>
-                  
-                </div>
-                 <div class="form-group col-md-3">
-                  <label class="control-label">Want to have biz?</label>
-                  <select class="form-control" id="hasbiz" name="wantbiz" required>
-                  <option value="<?php echo $hreltohhhead; ?>"><?php echo $wantbiz; ?>
-                    
-                  </option>
-                  <option value="Yes">Yes</option>
-                  <option value="No">No</option></select>
-                </div>
-                 <div class="form-group col-md-3">
-                  <label class="control-label">Line of Business</label>
-                  <input class="form-control" type="x" placeholder="Line of Biz" name="lineofbiz" value="<?php echo $lineofbiz; ?>">
-                </div>
-                <div class="form-group col-md-3">
-                  <label class="control-label">Skills to use</label>
-                  <input class="form-control" type="x" placeholder="Skills to use" name="skillforz" value="<?php echo $skillforz; ?>">
-                </div>
-              </div>
-
-<!--SME-->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
               <div class="row">
                 <div class="form-group col-md-3">
                   <label class="control-label">Last Name</label>
-                  <input class="form-control" type="text" placeholder="Last Name" name="lname" value="<?php echo $hlname; ?>">
+                  <input class="form-control" type="text" placeholder="Last Name" name="lname">
                 </div>
                  <div class="form-group col-md-3">
                   <label class="control-label">First Name</label>
-                  <input class="form-control" type="text" placeholder="First Name" name="fname" value="<?php echo $hfname; ?>">
+                  <input class="form-control" type="text" placeholder="First Name" name="fname">
                 </div>
                  <div class="form-group col-md-3">
                   <label class="control-label">Middle Name</label>
-                  <input class="form-control" type="x" placeholder="Middle Name" name="mname" value="<?php echo $hmname; ?>">
+                  <input class="form-control" type="x" placeholder="Middle Name" name="mname">
+                </div>
+                 <div class="form-group col-md-3">
+                  <label class="control-label">Ext Name</label>
+                  <input class="form-control" type="x" placeholder="Extension Name" name="xname">
                 </div>
               </div>
                 <div class="row">
                 <div class="form-group col-md-3">
-                  <label class="control-label">Relationship w/ the HH head </label>
-                  
-                  <select class="form-control" id="reltohhhead" name="reltohhhead" required>
-                  <option value="<?php echo $hreltohhhead; ?>"><?php echo $hreltohhhead; ?></option>
-                  <option value="Head">1 - Head</option>
-                  <option value="Spouse">2 - Spouse</option>
-                  <option value="Son/Daughter">3 - Son/Daughter</option>
-                  <option value="Son-in-law/Daughter-in-law">4 - Son-in-law/Daughter-in-law</option>
-                  <option value="Grandson/Granddaughter">5 - Grandson/Granddaughter</option>
-                  <option value="Grandfather/Grandmother">6 - GrandFather/GrandMother</option>
-                  <option value="Father/Mother">7 - Father/Mother</option>
-                  <option value="Uncle/Auntie">8 - Uncle/Auntie</option>
-                </select>
+                  <label class="control-label">Barangay</label>
+                  <select class="form-control" id="barangay" name="barangay" required>
+                  <option disabled selected>Select Here</option>
+
+                  <option value="APOLLO">APOLLO</option>
+                  <option value="BALUT">BALUT</option>
+                  <option value="BAYAN">BAYAN</option>
+                  <option value="BAGONG PARAISO">BAGONG PARAISO</option>
+                  <option value="CALERO">CALERO</option>
+                  <option value="CENTRO I">CENTRO I</option>
+                  <option value="CENTRO II">CENTRO II</option>
+                  <option value="DOÑA">DOÑA</option>
+                  <option value="KABALUTAN">KABALUTAN</option>
+                  <option value="KAPARANGAN">KAPARANGAN</option>
+                  <option value="MARIA FE">MARIA FE</option>
+                  <option value="MASANTOL">MASANTOL</option>
+                  <option value="MULAWIN">MULAWIN</option>
+                  <option value="PACAR">PACAR</option>
+                  <option value="PAGASA">PAGASA</option>
+                  <option value="PALIHAN">PALIHAN</option>
+                  <option value="PANTALAN BAGO">PANTALAN BAGO</option>
+                  <option value="PANTALAN LUMA">PANTALAN LUMA</option>
+                  <option value="PARANG PARANG">PARANG PARANG</option>
+                  <option value="PUKSUAN">PUKSUAN</option>
+                  <option value="SIBUL">SIBUL</option>
+                  <option value="SILAHIS">SILAHIS</option>
+                  <option value="TAGUMPAY">TAGUMPAY</option>
+                  <option value="TALA">TALA</option>
+                  <option value="TALIMUNDOC">TALIMUNDOC</option>
+                  <option value="TAPULAO">TAPULAO</option>
+                  <option value="TENEJERO">TENEJERO</option>
+                  <option value="TUGATOG">TUGATOG</option>
+                  <option value="WAWA">WAWA</option>
+                  </select>
 
                 </div>
                  <div class="form-group col-md-3">
                   <label class="control-label">Gender</label>
                   <select class="form-control" id="gender" name="gender" required>
-                  <option value="<?php echo $hgender; ?>"><?php echo $hgender; ?></option>
+                  <option>-Select here-</option>
                   <option value="Male">Male</option>
                   <option value="Female">Female</option>
                 </select>
                 </div>
                  <div class="form-group col-md-3">
                   <label class="control-label">Birthday</label>
-                  <input class="form-control" type="date" placeholder="Middle Name" name="bday"  value="<?php echo $hbday; ?>">
+                  <input class="form-control" type="date" placeholder="BDAY" name="bday">
                 </div>
               </div>
 
                   <div class="row">
                 <div class="form-group col-md-3">
                   <label class="control-label">Place of Birth</label>
-                  <input class="form-control" type="text" placeholder="Place of Birth" name="pob"  value="<?php echo $hplaceofbirth; ?>">
+                  <input class="form-control" type="text" placeholder="Place of Birth" name="pob">
                 </div>
                  <div class="form-group col-md-3">
                   <label class="control-label">Civil Status</label>
                   <select class="form-control" id="civilstat" name="civilstat" required>
-                  <option  value="<?php echo $hcivilstatus ; ?>"><?php echo $hcivilstatus ; ?></option>
+                  <option>-Select here-</option>
                   <option value="Single">1 - Single</option>
                   <option value="Married">2 - Married</option>
                   <option value="Widowed">3 - Widowed</option>
@@ -381,88 +333,42 @@ echo "<div title='This household is checked and verified' style='font-size: 24px
                 </div>
                  <div class="form-group col-md-3">
                   <label class="control-label">Contact Number</label>
-                  <input class="form-control" type="text"  maxlength="11" placeholder="Mobile Number" name="mnumber" value="<?php echo $hmnumber; ?>">
+                  <input class="form-control" type="text"  maxlength="11" placeholder="Mobile Number" name="mnumber">
                 </div>
               </div>
 
               <div class="row">
-                <div class="form-group col-md-3">
-                  <label class="control-label">Occupation</label>
-                  <input class="form-control" type="text" placeholder="Last Name" name="occupation" value="<?php echo $hoccupation; ?>">
-                </div>
-                 <div class="form-group col-md-3">
-                  <label class="control-label">Monthly Salary</label>
-                  <input class="form-control" type="number" placeholder="Monthly salary" name="salary" value="<?php echo $hsalary; ?>">
+               <div class="form-group col-md-3">
+                  <label class="control-label">Sector</label>
+                  <select class="form-control" id="civilstat" name="sector" required>
+                  <option>-Select here-</option>
+                  <option value="CHILDREN">CHILDREN</option>
+                  <option value="FAMILY HEAD">FAMILY HEAD</option>
+                  <option value="PWD">PWD</option>
+                  <option value="SENIOR">SENIOR</option>
+                  <option value="SOLO PARENT">SOLO PARENT</option>
+                  <option value="WOMEN">WOMEN</option>
+                  <option value="4PS">4PS</option>
+                  <option value="YOUTH">YOUTH</option>
+                  <option value="ADULT">ADULT</option>
+
+                </select>
                 </div>
               
               </div>
-               <div class="row">
-                <div class="form-group col-md-3">
-                  <label class="control-label"><b><font color="orange">Health Condition </font></b></label><br>
-  &ensp;&ensp; &ensp;&ensp; <input class="form-check-input" type="checkbox" name="healthc[]" value="Diabetes"> 1 - Diabetes<br>
-  &ensp;&ensp; &ensp;&ensp; <input class="form-check-input" type="checkbox" name="healthc[]" value="Hypertension">2 - Hypertension <br>
-  &ensp;&ensp;  &ensp;&ensp;<input class="form-check-input" type="checkbox" name="healthc[]" value="Chronic Kidney Disease"> 3 - Chronic Kidney Disease <br>
-  &ensp;&ensp; &ensp;&ensp; <input class="form-check-input" type="checkbox" name="healthc[]" value="Cancer"> 4 - Cancer<br>
-                </div>
-                 <div class="form-group col-md-3">
-                  <label class="control-label">Beneficiary of Program</label>
-                  
-                  <select class="form-control" id="beneof" name="beneof">
-                  <option value="<?php echo $hbeneof; ?>"><?php echo $hbeneof; ?></option>
-                  <option value="NONE"></option>
-                  <option value="Tulong Galing">1 - Tulong Galing</option>
-                  <option value="Bigay Pag-asa">2 - Bigay Pag-asa</option>
-                  <option value="BHW">3 - BHW</option>
-                  <option value="PWD">4 - PWD</option>
-                  <option value="Tanod">5 - Tanod</option>
-                  <option value="Senior Citizen">6 – Senior Citizen</option>
-                </select>
-                </div>
-
-              </div>
-               <div class="row">
-                <div class="form-group col-md-3">
-                  <label class="control-label">Vaccinated ?</label>
-                   <select class="form-control" id="vaccinated" name="vaccinated" required>
-                  <option value="<?php echo $hvaccinated; ?>"><?php echo $hvaccinated; ?></option>
-                  <option value="Yes">Yes</option>
-                  <option value="No">No</option>
-                </select>
-                </div>
-                 <div class="form-group col-md-3">
-                  <label class="control-label">If yes, Vaccine Name</label>
-                   <select class="form-control" id="vaccine" name="vaccine" required>
-                  <option value="<?php echo $hvaccine; ?>"><?php echo $hvaccine; ?></option>
-                  <option value="not vaccinated">not vaccinated</option>
-                  <option value="ASTRAZENECA">ASTRAZENECA</option>
-                  <option value="JANSSEN">JANSSEN</option>
-                  <option value="MODERNA">MODERNA</option>
-                  <option value="PFIZER">PFIZER</option>
-                  <option value="SINOPHARM">SINOPHARM</option>
-                  <option value="SINOVAC">SINOVAC</option>
-                  <option value="SPUTNIK LITE">SPUTNIK LITE</option>
-                  <option value="SPUTNIK V">SPUTNIK V</option>
-
-                </select>
-                </div>   
-              </div>
-                <div class="row">
-                 <div class="form-group col-md-3">
-                  <label class="control-label">Role</label>
-                 
-                  <input class="form-control" type="text" readonly placeholder="Monthly salary" name="role" value="<?php echo $hrole; ?>">
+             
                   
                 </div>
-            
+          
 
-            </div>
 
-             <button class="btn btn-primary" name="edithead" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Save</button>
+             <button class="btn btn-primary" name="edithead" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Add</button>
                </form>
         
         </div></div></div>
 
-</div>  </div>
+</div>
+                 </form>
 
 
 
@@ -475,29 +381,52 @@ echo "<div title='This household is checked and verified' style='font-size: 24px
             <h3 class="tile-title">Add Assistance </h3>
             <div class="tile-body">
                 <form method="post" role="form">
-                  <input class="form-control" type="text" placeholder="Last Name" name="editid" hidden value="<?php echo $hid; ?>">
+                  <input class="form-control" type="text" placeholder="Last Name" name="editid" hidden value="<?php echo $hhid; ?>">
                 <div class="row">
                   <div class="form-group col-md-3">
                   <label class="control-label">Request Status</label>
-                  <input class="form-control" type="text" readonly placeholder="Status.........." name="lname" value="">
+                  <input class="form-control" type="text" readonly placeholder="Status.........." name="lname" value="" >
                 </div>   </div>
               <div class="row">
                 <div class="form-group col-md-3">
                   <label class="control-label">Last Name</label>
-                  <input class="form-control" type="text" placeholder="Last Name" name="lname" value="<?php echo $hlname; ?>">
+                  <input class="form-control" type="text" placeholder="Last Name" name="lname" value="<?php echo $lname; ?>" readonly>
                 </div>
                  <div class="form-group col-md-3">
                   <label class="control-label">First Name</label>
-                  <input class="form-control" type="text" placeholder="First Name" name="fname" value="<?php echo $hfname; ?>">
+                  <input class="form-control" type="text" placeholder="First Name" name="fname" value="<?php echo $fname; ?>" readonly>
                 </div>
                  <div class="form-group col-md-3">
                   <label class="control-label">Middle Name</label>
-                  <input class="form-control" type="x" placeholder="Middle Name" name="mname" value="<?php echo $hmname; ?>">
+                  <input class="form-control" type="x" placeholder="Middle Name" name="mname" value="<?php echo $mname; ?>" readonly>
+                </div>
+                 <div class="form-group col-md-3">
+                  <label class="control-label">Ext Name</label>
+                  <input class="form-control" type="x" placeholder="Middle Name" name="mname" value="<?php echo $xname; ?>" readonly>
                 </div>
                  <div class="form-group col-md-3">
                   <label class="control-label">Date</label>
                   <input class="form-control" type="date" placeholder="Date" name="date" required>
                 </div>
+              </div>
+              <div class="row">
+                <div class="form-group col-md-3">
+                  <label class="control-label">Client Last Name</label>
+                  <input class="form-control" type="text" placeholder="Last Name" name="clname">
+                </div>
+                 <div class="form-group col-md-3">
+                  <label class="control-label">Client First Name</label>
+                  <input class="form-control" type="text" placeholder="First Name" name="cfname" >
+                </div>
+                 <div class="form-group col-md-3">
+                  <label class="control-label">Client Middle Name</label>
+                  <input class="form-control" type="x" placeholder="Middle Name" name="cmname" >
+                </div>
+                 <div class="form-group col-md-3">
+                  <label class="control-label">Client Ext Name</label>
+                  <input class="form-control" type="x" placeholder="Ext Name" name="cxname" >
+                </div>
+                
               </div>
                 <div class="row">
                 <div class="form-group col-md-3">
@@ -636,12 +565,12 @@ echo "<div title='This household is checked and verified' style='font-size: 24px
 
 
 <div class="tile">
-  <h4>Household Head Details:</h4>
+  <h4>Beneficiary Details:</h4>
 
- <p>Name :<font color="blue" size="+1"><?php echo $hfname." ".$hmname." ".$hlname;?></font> &emsp; 
-Bday : <font color="blue" size="+1"><?php echo $hbday ?> </font></p>
-<p> Contact # : <font color="blue" size="+1"><?php echo $hmnumber ?> </font>  &emsp;  &emsp;  &emsp;  &emsp;  &emsp;  &emsp;  &emsp; 
-Sector : <font color="blue" size="+1"><?php echo $hbeneof;?> </font></p>
+ <p>Name :<font color="blue" size="+1"><?php echo $fname." ".$mname." ".$lname." ".$xname;?></font> &emsp; 
+Bday : <font color="blue" size="+1"><?php echo $bday ?> </font></p>
+<p> Contact # : <font color="blue" size="+1"><?php echo $mnumber ?> </font>  &emsp;  &emsp;  &emsp;  &emsp;  &emsp;  &emsp;  &emsp; 
+Sector : <font color="blue" size="+1"><?php echo $sector;?> </font></p>
 
 <a href="#edithead" data-toggle="modal"><button type='button' class='btn btn-warning btn-sm'><i class="fa fa-pencil-square-o" aria-hidden="true"> Edit</i></button></a>
 <a href="#assistancehead" data-toggle="modal"><button type='button' class='btn btn-info btn-sm'><i class="fa fa-plus" aria-hidden="true"> Add Assistance</i></button></a>
@@ -665,13 +594,13 @@ Sector : <font color="blue" size="+1"><?php echo $hbeneof;?> </font></p>
  <div class="row">
         <div class="col-md-12">
           <div class="tile">
-            <h1>House Hold Requests</h1>
+            <h1>Beneficiary Requests</h1>
             <div class="tile-body">
               <div class="table-responsive">
                 <table class="table table-hover table-bordered" id="sampleTable">
                   <thead>
                     <tr>
-                      <th>Client ID</th>
+                      <th>Assistance #</th>
                       <th>Name</th>
                       <th>Request service</th>
                       <th>Type of Service</th>
@@ -688,7 +617,7 @@ Sector : <font color="blue" size="+1"><?php echo $hbeneof;?> </font></p>
                     if ($result->num_rows > 0) {
                         // output data of each row
                         while($row = $result->fetch_assoc()) {
-                            $id = $row['id'];
+                            $assistanceid = $row['id'];
                             $lname = $row['lname'];
                             $fname= $row['fname'];
                             $mname= $row['mname'];
@@ -705,11 +634,16 @@ Sector : <font color="blue" size="+1"><?php echo $hbeneof;?> </font></p>
                             $status= $row['status'];
                             $notes= $row['notes'];
                             $category = $row['category'];
+                            $cfname = $row['clientfname'];
+                            $cmname= $row['clientmname'];
+                            $clname = $row['clientlname'];
+                            $cxname = $row['clientxname'];
+
                            $fullname = $fname." ".$mname." ".$lname;
                            ?>
 
                     <tr>
-                      <td><?php echo $id; ?></td>
+                      <td><?php echo $assistanceid; ?></td>
                        <td><?php echo $fullname;  ?></td>
                        <td><?php echo $reqservice;   ?></td>
                        <td><?php echo $tos; ?></td>
@@ -718,9 +652,9 @@ Sector : <font color="blue" size="+1"><?php echo $hbeneof;?> </font></p>
                          <td> <?php echo $status; ?></td>
                          <td><!--td start of actions-->
 
- <a href="#assistanceedit<?php echo $id;?>" data-toggle="modal"><button type='button' class='btn btn-warning btn-sm'>
+ <a href="#assistanceedit<?php echo $assistanceid;?>" data-toggle="modal"><button type='button' class='btn btn-warning btn-sm'>
   <i class="fa fa-pencil-square-o" aria-hidden="true"></i><i class="fa fa-print" aria-hidden="true"></i></button></a>                           
-<a href='#deleteassistance<?php echo $id; ?>' data-toggle='modal'><button type='button' class='btn btn-danger btn-sm' dis><i class='fa fa-trash-o' aria-hidden='true'></i></i>
+<a href='#deleteassistance<?php echo $assistanceid; ?>' data-toggle='modal'><button type='button' class='btn btn-danger btn-sm' dis><i class='fa fa-trash-o' aria-hidden='true'></i></i>
   </button></a>
 
 
@@ -732,36 +666,60 @@ Sector : <font color="blue" size="+1"><?php echo $hbeneof;?> </font></p>
 
 
 
-<div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="assistanceedit<?php echo $id; ?>">
+<div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="assistanceedit<?php echo $assistanceid; ?>">
   <div class="modal-dialog modal-xl">
          <div class="modal-content">
           <div class="tile">
-            <h3 class="tile-title">Edit/Print Assistance <?php echo $id ?> </h3>
+            <h3 class="tile-title">Edit/Print Assistance <?php echo $assistanceid; ?> </h3>
             <div class="tile-body">
                 <form method="post" role="form">
-                  <input class="form-control" type="text" placeholder="Last Name" name="editid" hidden value="<?php echo $id; ?>">
+                  <input class="form-control" type="text" placeholder="Last Name" name="editid" hidden value="<?php echo $assistanceid; ?>">
                 <div class="row">
                   <div class="form-group col-md-3">
                   <label class="control-label">Request Status</label>
                   <input class="form-control" type="text" readonly placeholder="Last Name" name="lname" value="<?php echo $status  ; ?>">
                 </div>   </div>
               <div class="row">
+
                 <div class="form-group col-md-3">
                   <label class="control-label">Last Name</label>
-                  <input class="form-control" type="text" placeholder="Last Name" name="lname" value="<?php echo $lname; ?>">
+                  <input class="form-control" type="text" placeholder="Last Name" name="lname" value="<?php echo $lname; ?>"readonly>
                 </div>
                  <div class="form-group col-md-3">
                   <label class="control-label">First Name</label>
-                  <input class="form-control" type="text" placeholder="First Name" name="fname" value="<?php echo $fname; ?>">
+                  <input class="form-control" type="text" placeholder="First Name" name="fname" value="<?php echo $fname; ?>"readonly>
                 </div>
                  <div class="form-group col-md-3">
                   <label class="control-label">Middle Name</label>
-                  <input class="form-control" type="x" placeholder="Middle Name" name="mname" value="<?php echo $mname; ?>">
+                  <input class="form-control" type="x" placeholder="Middle Name" name="mname" value="<?php echo $mname; ?>"readonly>
+                </div>
+                <div class="form-group col-md-3">
+                  <label class="control-label">Ext Name</label>
+                  <input class="form-control" type="x" placeholder="Ext Name" name="mname" value="<?php echo $xname; ?>"readonly>
                 </div>
                  <div class="form-group col-md-3">
                   <label class="control-label">Date</label>
                   <input class="form-control" type="date" placeholder="Date" name="editdate" value="<?php echo $cdate; ?>">
                 </div>
+              </div>
+               <div class="row">
+                <div class="form-group col-md-3">
+                  <label class="control-label">Client Last Name</label>
+                  <input class="form-control" type="text" placeholder="Last Name" name="clname" value="<?php echo $clname; ?>">
+                </div>
+                 <div class="form-group col-md-3">
+                  <label class="control-label">Client First Name</label>
+                  <input class="form-control" type="text" placeholder="First Name" name="cfname" value="<?php echo $cfname; ?>">
+                </div>
+                 <div class="form-group col-md-3">
+                  <label class="control-label">Client Middle Name</label>
+                  <input class="form-control" type="x" placeholder="Middle Name" name="cmname" value="<?php echo $cmname; ?>">
+                </div>
+                 <div class="form-group col-md-3">
+                  <label class="control-label">Client Ext Name</label>
+                  <input class="form-control" type="x" placeholder="Ext Name" name="cxname" value="<?php echo $cxname; ?>">
+                </div>
+                
               </div>
                 <div class="row">
                 <div class="form-group col-md-3">
@@ -887,7 +845,7 @@ Sector : <font color="blue" size="+1"><?php echo $hbeneof;?> </font></p>
 
 
 
-  <div id="deleteassistance<?php echo $id; ?>" class="modal fade" role="dialog">
+  <div id="deleteassistance<?php echo $assistanceid; ?>" class="modal fade" role="dialog">
                         <div class="modal-dialog">
 
                             <form method="post">
@@ -899,10 +857,10 @@ Sector : <font color="blue" size="+1"><?php echo $hbeneof;?> </font></p>
                                          <button type="button" class="close" data-dismiss="modal">&times;</button>
                                     </div>
                                     <div class="modal-body">
-                                        <input type="hidden" name="delete_id" value="<?php echo $id; ?>">
+                                        <input type="hidden" name="delete_id" value="<?php echo $assistanceid; ?>">
 
 
-                                        <div class="alert alert-danger">Are you sure you want DELETE assistance record: <?php echo $id; ?> <strong>
+                                        <div class="alert alert-danger">Are you sure you want DELETE assistance record: <?php echo $assistanceid; ?> <strong>
                                                 <?php echo $item_name; ?>?</strong> </div>
                                           <label class="control-label">Reason of deletion</label>
                                          <input class="form-control" type="text" name="reason" value="" required>       
@@ -964,292 +922,12 @@ Sector : <font color="blue" size="+1"><?php echo $hbeneof;?> </font></p>
 
 
 
-      <div class="row">
-        <div class="col-md-12">
-          <div class="tile">
-            <div class="tile-body">
-<h1>Household members</h1>
-              <div class="table-responsive">
-                <table class="table table-hover table-bordered" id="sampleTable"   style="font-family:tahoma; font-size:115%">
-                  <thead>
-                    <tr>
-                      <th>ID</th>
-                      <th>First Name</th>
-                      <th>Middle Name</th>
-                      <th>Last Name</th>
-                      <th>Sector</th>
-
-                   
-                      <th>ACTIONS</th>
-
-                    </tr>
-                  </thead>
-                  <tbody>
-                  <?php 
-                  $hhid = $_GET['id'];
-                    $sql = "SELECT * from tbl_people WHERE hhid =$hhid AND role = 'member' OR role ='Secondary Head'  AND hhid =$hhid  ORDER BY hhid ASC limit 30";
-                    $result = $conn->query($sql);
-                    if ($result->num_rows > 0) {
-                        // output data of each row
-                        while($row = $result->fetch_assoc()) {
-                            $id = $row['id'];
-                            $lname= $row['lname'];
-                            $fname= $row['fname'];
-                            $mname= $row['mname'];
-                            $reltohhhead= $row['relationship'];
-                            $gender = $row['gender'];
-                            $bday = $row['bday'];
-                            $civilstatus = $row['civilstatus'];
-                            $placeofbirth = $row['placeofbirth'];
-                            $mnumber = $row['phone'];
-                            $occupation  = $row['work'];
-                            $salary = $row['salary'];
-                            $health = $row['health'];
-                            $beneof = $row['sector'];
-                            $vaccinated= $row['vaccinated'];
-                            $vaccine= $row['vaccine'];
-                            $role= $row['role'];
-                            $status= $row['status'];
-                            $remarks= $row['remarks'];
-                            $tag= $row['tag'];
 
 
 
 
 
 
-
-                         ?>
-
-      
-                   
-                      <td><?php echo $id ?></td>
-                      <td><?php echo $fname ?></td>
-                      <td><?php echo $mname ?></td>
-                      <td><?php echo $lname ?></td>
-                      <td><?php echo $beneof ?></td>
-                 
-                   
-                    
-                   
-
-<td>
-<!-- <a href="household.php?id=<?php echo $id?>"> -->
-<button type='button' class='btn btn-info btn-sm' disabled><i class="fa fa-list" aria-hidden="true"></i></button>
-
- <a href="#edit<?php echo $id;?>" data-toggle="modal"><button type='button' class='btn btn-warning btn-sm'>
-  <i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></a>
-<?php if ($userrole =='admin') {
- echo "<a href='#delete$id' data-toggle='modal'><button type='button' class='btn btn-danger btn-sm' dis><i class='fa fa-trash-o' aria-hidden='true'></i></i>
-  </button></a>";
-}else{
-  echo "<a href='#delete$id' data-toggle='modal'><button type='button' class='btn btn-danger btn-sm' disabled><i class='fa fa-trash-o' aria-hidden='true'></i></i>
-  </button></a>";
-}
-  ?>
-  <a href="#assistance<?php echo $id;?>" data-toggle="modal">
-  <button type='button' class='btn btn-info btn-sm'><i class="fa fa-plus" aria-hidden="true"></i></button>
-
-</td>
-</tr>
-</td>
-
-
-
-
-
-
-
-
-               
-
-                 
-   <?php  ?>
-   
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="edit<?php echo $id; ?>">
-  <div class="modal-dialog modal-xl">
-         <div class="modal-content">
-          <div class="tile">
-            <h3 class="tile-title">Edit Member <?php echo $id ?> </h3>
-            <div class="tile-body">
-                <form method="post" role="form">
-                  <input class="form-control" type="text" placeholder="Last Name" name="editid" hidden value="<?php echo $id; ?>">
-              <div class="row">
-                <div class="form-group col-md-3">
-                  <label class="control-label">Last Name</label>
-                  <input class="form-control" type="text" placeholder="Last Name" name="lname" value="<?php echo $lname; ?>">
-                </div>
-                 <div class="form-group col-md-3">
-                  <label class="control-label">First Name</label>
-                  <input class="form-control" type="text" placeholder="First Name" name="fname" value="<?php echo $fname; ?>">
-                </div>
-                 <div class="form-group col-md-3">
-                  <label class="control-label">Middle Name</label>
-                  <input class="form-control" type="x" placeholder="Middle Name" name="mname" value="<?php echo $mname; ?>">
-                </div>
-              </div>
-                <div class="row">
-                <div class="form-group col-md-3">
-                  <label class="control-label">Relationship w/ the HH head </label>
-                  
-                  <select class="form-control" id="reltohhhead" name="reltohhhead" required>
-                  <option value="<?php echo $reltohhhead; ?>"><?php echo $reltohhhead; ?></option>
-                  <option value="">0 - N/A</option>
-                  <option value="Head">1 - Head</option>
-                  <option value="Spouse">2 - Spouse</option>
-                  <option value="Son/Daughter">3 - Son/Daughter</option>
-                  <option value="Son-in-law/Daughter-in-law">4 - Son-in-law/Daughter-in-law</option>
-                  <option value="Grandson/Granddaughter">5 - Grandson/Granddaughter</option>
-                  <option value="Grandfather/Grandmother">6 - GrandFather/GrandMother</option>
-                  <option value="Father/Mother">7 - Father/Mother</option>
-                  <option value="Uncle/Auntie">8 - Uncle/Auntie</option>
-                  <option value="Brother/Sister">9 - Brother/Sister</option>
-                  <option value="Mother-in-law/Father-in-law">10 - Mother-in-law/Father-in-law</option>
-                  <option value="Cousin">11 - Cousin</option>
-                  <option value="Brother-in-law/Sister-in-law">12 - Brother-in-law/Sister-in-law</option>
-                   <option value="Niece/Nephew">13 - Niece/Nephew</option>
-                   <option value="Friend">14 - Friend</option>
-                </select>
-
-                </div>
-                 <div class="form-group col-md-3">
-                  <label class="control-label">Gender</label>
-                  <select class="form-control" id="gender" name="gender" required>
-                  <option value="<?php echo $gender; ?>"><?php echo $gender; ?></option>
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                </select>
-                </div>
-                 <div class="form-group col-md-3">
-                  <label class="control-label">Birthday</label>
-                  <input class="form-control" type="date" placeholder="Middle Name" name="bday"  value="<?php echo $bday; ?>">
-                </div>
-              </div>
-
-                  <div class="row">
-                <div class="form-group col-md-3">
-                  <label class="control-label">Place of Birth</label>
-                  <input class="form-control" type="text" placeholder="Place of Birth" name="pob"  value="<?php echo $placeofbirth; ?>">
-                </div>
-                 <div class="form-group col-md-3">
-                  <label class="control-label">Civil Status</label>
-                  <select class="form-control" id="civilstat" name="civilstat" required>
-                  <option  value="<?php echo $civilstatus ; ?>"><?php echo $civilstatus ; ?></option>
-                  <option value="Single">1 - Single</option>
-                  <option value="Married">2 - Married</option>
-                  <option value="Widowed">3 - Widowed</option>
-                  <option value="Divorced/Separated">4 - Divorced/Separated</option>
-                  <option value="Common-law/Live-in">5 - Common-law/Live-in</option>
-                </select>
-                </div>
-                 <div class="form-group col-md-3">
-                  <label class="control-label">Contact Number</label>
-                  <input class="form-control" type="text"  maxlength="11" placeholder="Mobile Number" name="mnumber" value="<?php echo $mnumber; ?>">
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="form-group col-md-3">
-                  <label class="control-label">Occupation</label>
-                  <input class="form-control" type="text" placeholder="Occupation" name="occupation" value="<?php echo $occupation; ?>">
-                </div>
-                 <div class="form-group col-md-3">
-                  <label class="control-label">Monthly Salary</label>
-                  <input class="form-control" type="number" placeholder="Monthly salary" name="salary" value="<?php echo $salary; ?>">
-                </div>
-              
-              </div>
-               <div class="row">
-                <div class="form-group col-md-3">
-                  <label class="control-label"><b><font color="orange">Health Condition </font></b></label><br>
-  &ensp;&ensp; &ensp;&ensp;  <input class="form-check-input" type="checkbox" name="healthc[]" value="Diabetes"> 1 - Diabetes<br>
-  &ensp;&ensp; &ensp;&ensp; <input class="form-check-input" type="checkbox" name="healthc[]" value="Hypertension">2 - Hypertension <br>
-  &ensp;&ensp;  &ensp;&ensp; <input class="form-check-input" type="checkbox" name="healthc[]" value="Chronic Kidney Disease"> 3 - Chronic Kidney Disease <br>
-  &ensp;&ensp; &ensp;&ensp; <input class="form-check-input" type="checkbox" name="healthc[]" value="Cancer"> 4 - Cancer<br>
-                </div>
-                 <div class="form-group col-md-3">
-                  <label class="control-label">Beneficiary of Program</label>
-                  
-                  <select class="form-control" id="beneof" name="beneof" required>
-                  <option value="<?php echo $beneof; ?>"><?php echo $beneof; ?></option>
-                  <option value="None">NONE</option>
-                  <option value="Tulong Galing">1 - Tulong Galing</option>
-                  <option value="Bigay Pag-asa">2 - Bigay Pag-asa</option>
-                  <option value="BHW">3 - BHW</option>
-                  <option value="PWD">4 - PWD</option>
-                  <option value="Tanod">5 - Tanod</option>
-                  <option value="Senior Citizen">6 – Senior Citizen</option>
-                </select>
-                </div>
-
-              </div>
-               <div class="row">
-                <div class="form-group col-md-3">
-                  <label class="control-label">Vaccinated ?</label>
-                   <select class="form-control" id="vaccinated" name="vaccinated" required>
-                  <option value="<?php echo $vaccinated; ?>"><?php echo $vaccinated; ?></option>
-                  <option value="Yes">Yes</option>
-                  <option value="No">No</option>
-                </select>
-                </div>
-                 <div class="form-group col-md-3">
-                  <label class="control-label">If yes, Vaccine Name</label>
-                   <select class="form-control" id="vaccine" name="vaccine" required>
-                  <option value="<?php echo $vaccine; ?>"><?php echo $vaccine; ?></option>
-                  <option value="not vaccinated">not vaccinated</option>
-                  <option value="ASTRAZENECA">ASTRAZENECA</option>
-                  <option value="JANSSEN">JANSSEN</option>
-                  <option value="MODERNA">MODERNA</option>
-                  <option value="PFIZER">PFIZER</option>
-                  <option value="SINOPHARM">SINOPHARM</option>
-                  <option value="SINOVAC">SINOVAC</option>
-                  <option value="SPUTNIK LITE">SPUTNIK LITE</option>
-                  <option value="SPUTNIK V">SPUTNIK V</option>
-
-                </select>
-                </div>   
-              </div>
-                <div class="row">
-                 <div class="form-group col-md-3">
-                  <label class="control-label">Role</label>
-                  <select class="form-control" id="role" name="role" required>
-                  <option value="<?php echo $role; ?>"><?php echo $role; ?></option>
-                  <option value="Member">Household Member</option>
-                  <option value="Secondary Head">Secondary Head</option></select>
-                </div>
-            
-
-            </div>
-
-             <button class="btn btn-primary" name="editmember" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Save</button>
-               </form>
-        
-        </div></div></div></div>
-
-</div>  
-</div>  </div>  
 
 
 
@@ -1292,144 +970,6 @@ Sector : <font color="blue" size="+1"><?php echo $hbeneof;?> </font></p>
 
 
 
-<div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="assistance<?php echo $id; ?>">
-  <div class="modal-dialog modal-xl">
-         <div class="modal-content">
-          <div class="tile">
-            <h3 class="tile-title">Add assistance for <?php echo $id ?> </h3>
-            <div class="tile-body">
-                <form method="post" role="form">
-                  <input class="form-control" type="text" placeholder="Last Name" name="editid" hidden value="<?php echo $id; ?>">
-              <div class="row">
-                <div class="form-group col-md-3">
-                  <label class="control-label">Last Name</label>
-                  <input class="form-control" type="text" placeholder="Last Name" name="lname" value="<?php echo $lname; ?>">
-                </div>
-                 <div class="form-group col-md-3">
-                  <label class="control-label">First Name</label>
-                  <input class="form-control" type="text" placeholder="First Name" name="fname" value="<?php echo $fname; ?>">
-                </div>
-                 <div class="form-group col-md-3">
-                  <label class="control-label">Middle Name</label>
-                  <input class="form-control" type="x" placeholder="Middle Name" name="mname" value="<?php echo $mname; ?>">
-                </div>
-                 <div class="form-group col-md-3">
-                  <label class="control-label">Date</label>
-                  <input class="form-control" type="date" placeholder="Date" name="date" required>
-                </div>
-              </div>
-                <div class="row">
-                <div class="form-group col-md-3">
-                  <label class="control-label">Request Service</label>
-                  
- <select class="form-control" id="reqservice" name="reqservice" required>
- <option value="" selected disabled hidden>Choose here</option>
- <option value="Hospital Bill">Hospital Bill</option>
-  <option value="Medicines">Medicines</option>
-  <option value="Laboratory">Laboratory</option>
-  <option value="Hemodialysis">Hemodialysis</option>
-  <option value="2D Echo">2D Echo</option>
-  <option value="Animal Bite">Animal Biten</option>
-  <option value="Burial">Burial</option>
-  <option value="Funeral">Funeral</option>
-  <option value="CT Scan">CT Scan</option>
-  <option value="MRI">MRI</option>
-  <option value="Chemotherapy">Chemotherapy</option>
-  <option value="X-Ray">X-Ray</option>
-  <option value="Ultra Sound">Ultra Sound</option>
-
-  <option value="LL-Funeral">Libreng Libing-Funeral</option>
-  <option value="LL-Memorial">Libreng Libing-Memorial</option>
-  <option value="LL-Funeral &Memorial">Libreng Libing-Funeral &Memorial</option>
-  <option value="Fire Assistance">Fire Assistance</option>
-  <option value="Special Case">Special Case</option>
-  
-                </select>
-
-                </div>
-                 <div class="form-group col-md-3">
-                  <label class="control-label">MSWD Amount</label>
-                  <input class="form-control" type="number" placeholder="Amount" name="reqamount">
-                </div>
-                  <div class="form-group col-md-3">
-                  <label class="control-label">Service Provider</label>
-                  
- <select class="form-control" id="reqservice" name="servicepro" required>
-  <option option value="" >Choose here</option>
- <option value="TGP">TGP</option>
-  <option value="De Guzman">De Guzman</option>
-  <option value="Punzalan">Punzalan</option>
-  <option value="Tongol">Tongol</option>
-  <option value="ODH">ODH</option>
-  <option value="CDBDCC">CLINICA DE BATAAN DIAGNOSTIC CENTER CORP</option>
-  <option value="SPECTRO">SPECTRO DIAGNOSTIC LABORATORY</option>
-  <option value="BATOL-CANLAS">BATOL-CANLAS DIAGNOSTIC CENTER</option>
-  <option value="BDHMC">Bataan Doctors</option>
-  <option value="BGH">BGH</option>
-  <option value="ICMC">ICMC</option>
-  <option value="ST. Joseph">ST. Joseph</option>
-  <option value="OMP">Orani Memorial Park</option>
-  <option value="OTHERS">OTHERS</option>
-  
-                </select>
-
-                </div>
-<div class="form-group col-md-3">
-<label class="control-label">Type</label>
-                  
- <select class="form-control" id="type" name="type" required>
-  <option value="" >Choose here</option>
- <option value="GL">GL</option>
-  <option value="Cash">CASH</option>
-  <option value="CO Mayor">CO Mayor</option>
-  
-                </select>
-
-                </div>
-                
-              </div>
-
-                  <div class="row">
-                 <div class="form-group col-md-3">
-                  <label class="control-label">Category</label>
-                  <select class="form-control" id="category" name="category" required>
-                  <option value="">Choose here</option>
- <option value="Children">Children</option>
-  <option value="Family Head">Family Head</option>
-  <option value="PWD">PWD</option>
-  <option value="Senior">Senior</option>
-  <option value="Solo Parent">Solo Parent</option>
-  <option value="Women">Women</option>
-  <option value="4PS">4PS</option>
-  <option value="Youth">Youth</option>
-  <option value="Adult">Adult</option>
-                </select>
-                </div>
-                  <div class="form-group col-md-3">
-                  <label class="control-label">Burial/Illness</label>
-                  <select class="form-control" id="burialorillness" name="burialorillness" required>
-                  <option value="">Choose here</option>
-                  <option value="Burial">Burial</option>
-                  <option value="Illness">Illness</option>  
-                </select>
-                </div>
-                  <div class="form-group col-md-3">
-                  <label class="control-label">Proof</label>
-                 <input class="form-control" type="file" name="file" size="50" />
-                </div>
-              </div>
-
-             
-            
-
-            </div>
-
-             <button class="btn btn-primary" name="add_assistance" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Add</button>
-               </form>
-        
-        </div></div></div></div>
-
-</div>  
 
 
 
@@ -1459,7 +999,7 @@ Sector : <font color="blue" size="+1"><?php echo $hbeneof;?> </font></p>
 
 
 
-  <?php }}
+  <?php
 
 
 
@@ -1492,6 +1032,12 @@ if(isset($_POST['edit_assistance'])){
                         $lname = $_POST['lname'];
                         $fname = $_POST['fname'];
                         $mname = $_POST['mname'];
+                        $xname = $_POST['xname'];
+
+                        $clname = $_POST['clname'];
+                        $cfname = $_POST['cfname'];
+                        $cmname = $_POST['cmname'];
+                        $cxname = $_POST['cxname'];
                         
                         $date = $_POST['editdate'];
                         $reqservice = $_POST['reqservice'];
@@ -1502,7 +1048,7 @@ if(isset($_POST['edit_assistance'])){
                         $burialorillness = $_POST['burialorillness'];
 
 
-                    $sqlget = "SELECT tbl_household.hhid, tbl_people.relationship, tbl_people.fname,tbl_household.barangay, tbl_people.mname, tbl_people.lname FROM tbl_household INNER JOIN tbl_people ON tbl_people.hhid= tbl_household.hhid WHERE tbl_people.id= '$client'";
+                    $sqlget = "SELECT tbl_household.hhid, tbl_people.relationship, tbl_people.fname,tbl_household.barangay, tbl_people.mname, tbl_people.lname FROM tbl_household INNER JOIN tbl_people ON tbl_people.hhid= tbl_household.hhid WHERE tbl_people.id= '$beneid'";
                     
 
 
@@ -1520,7 +1066,7 @@ if(isset($_POST['edit_assistance'])){
 }
               
 
- $sql = "UPDATE `assistance` SET `cdate` = '$date', `lname` = '$lname', `fname` = '$fname', `mname` = '$mname', `relationship` = '$relationship', `Barangay` = '$barangay', `reqservice` = '$reqservice', `reqamount` = '$reqamount', `tos` = '$type', `servicepro` = '$servicepro', `type` = '$burialorillness', `category` = '$category' WHERE `assistance`.`id` = '$edit'";
+ $sql = "UPDATE `assistance` SET `cdate` = '$date', `lname` = '$lname', `fname` = '$fname', `mname` = '$mname', `xname` = '$xname', `Barangay` = '$barangay', `reqservice` = '$reqservice', `reqamount` = '$reqamount', `appservice` = '$appservice', `appamount` = '$appamount', `tos` = '$tos', `servicepro` = '$servicepro', `type` = '$type', `typeofillness` = '$typeofillness', `category` = '$category', `status` = '$status', `notes` = '$notes', `clientfname` = '$cfname', `clientmname` = '$cmname', `clientlname` = '$clname', `clientxname` = '$cxname' WHERE `assistance`.`id` ='$edit'";
 
 
 
@@ -1674,6 +1220,10 @@ if ($conn->query($sql) === TRUE) {
                         $lname = $_POST['lname'];
                         $fname = $_POST['fname'];
                         $mname = $_POST['mname'];
+                        $clname = $_POST['clname'];
+                        $cfname = $_POST['cfname'];
+                        $cmname = $_POST['cmname'];
+                        $cxname =$_POST['cxname'];
                         
                         $date = $_POST['date'];
                         $reqservice = $_POST['reqservice'];
@@ -1685,7 +1235,7 @@ if ($conn->query($sql) === TRUE) {
                         $typeofillness= $_POST ['typeofillness'];
 
 
-                    $sqlget = "SELECT tbl_household.hhid, tbl_people.relationship, tbl_people.fname,tbl_household.barangay, tbl_people.mname, tbl_people.lname FROM tbl_household INNER JOIN tbl_people ON tbl_people.hhid= tbl_household.hhid WHERE tbl_people.id= '$client'";
+                    $sqlget = "SELECT tbl_household.hhid, tbl_people.relationship, tbl_people.fname,tbl_household.barangay, tbl_people.mname, tbl_people.lname FROM tbl_household INNER JOIN tbl_people ON tbl_people.hhid= tbl_household.hhid WHERE tbl_people.id= '$beneid'";
                     
 
 
@@ -1695,15 +1245,17 @@ if ($conn->query($sql) === TRUE) {
                         // output data of each row
               $row = $result->fetch_assoc();
                             $selectedhhid = $row['hhid'];
-                             $relationship = $row['relationship'];
+                             
                               $barangay = $row['barangay'];
                         
 
                         
 }
-              
+     
 
- $sql = "INSERT INTO `assistance` (`id`, `hhid`, `clientid`, `cdate`, `lname`, `fname`, `mname`, `relationship`, `Barangay`, `reqservice`, `reqamount`, `appservice`, `appamount`, `tos`, `servicepro`, `type`,`typeofillness`, `category`, `status`, `notes`)VALUES (NULL, '$id','$client', '$date', '$lname', '$fname', '$mname', '$relationship', '$barangay', '$reqservice', '$reqamount', '', '', '$type', '$servicepro', '$burialorillness','$typeofillness','$category', 'pending', '')";
+ $sql = "INSERT INTO `assistance` (`id`, `hhid`, `clientid`, `cdate`, `lname`, `fname`, `mname`,`xname`,`Barangay`, `reqservice`, `reqamount`, `appservice`, `appamount`, `tos`, `servicepro`, `type`,`typeofillness`, `category`, `status`, `notes`, `clientfname`, `clientmname`, `clientlname`, `clientxname`)VALUES (NULL, '$id','$client', '$date', '$lname', '$fname', '$mname','$xname','$barangay', '$reqservice', '$reqamount', '', '', '$type', '$servicepro', '$burialorillness','$typeofillness','$category', 'pending', '','$cfname', '$cmname', '$clname', '$cxname')";
+
+ 
 
 
 
@@ -1841,7 +1393,7 @@ if(isset($_POST['edithead'])){
        $sql = "UPDATE `tbl_people` SET `skillforz` = '$skillforz',`lineofbiz` = '$lineofbiz',`wantsme` = '$wantbiz',`sme` = '$hasbiz',`lname` = '$lname', `fname` = '$fname', `mname` = '$mname', `relationship` = '$reltohhhead', `gender` = '$gender', `bday` = '$bday', `placeofbirth` = '$pob', `civilstatus` = '$civilstat', `phone` = '$mnumber', `work` = '$occupation', `salary` = '$salary', `health` = '$chck', `sector` = '$beneof', `vaccinated` = '$vaccinated', `vaccine` = '$vaccine', `role` = '$role' WHERE `tbl_people`.`id` = '$editidhead'";
 
                             if ($conn->query($sql) === TRUE) {
-                                echo "<script type='text/javascript'>alert(\"Successfully edited House hold head $editidhead \")</script>";
+                                echo "<script type='text/javascript'>alert(\"Successfully edited Beneficiary $editidhead \")</script>";
                                echo "<script>window.location.href='household.php?id=$hhid'</script>"; 
                             } else {
                                 echo "Error updating record: " . $conn->error;
@@ -1863,13 +1415,13 @@ if(isset($_POST['edithead'])){
      <form class="row" method="post" role="form">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Search HouseHold </h5>
+        <h5 class="modal-title" id="exampleModalLabel">Search Beneficiary </h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-      <label>Input HouseHold ID: </label> <input type="text" name="searchidbox" required>
+      <label>Input Beneficiary ID: </label> <input type="text" name="searchidbox" required>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -1882,183 +1434,7 @@ if(isset($_POST['edithead'])){
 </div>
 
       
-  <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="add">
-  <div class="modal-dialog modal-xl">
-   
-       <div class="modal-content">
-          <div class="tile">
-            <h3 class="tile-title">Add a member</h3>
-            <div class="tile-body">
-                <form method="post" role="form">
-              <div class="row">
-                <div class="form-group col-md-3">
-                  <label class="control-label">Last Name</label>
-                  <input class="form-control" type="text" placeholder="Last Name" name="lname">
-                </div>
-                 <div class="form-group col-md-3">
-                  <label class="control-label">First Name</label>
-                  <input class="form-control" type="text" placeholder="First Name" name="fname">
-                </div>
-                 <div class="form-group col-md-3">
-                  <label class="control-label">Middle Name</label>
-                  <input class="form-control" type="x" placeholder="Middle Name" name="mname">
-                </div>
-              </div>
-                <div class="row">
-                <div class="form-group col-md-3">
-                  <label class="control-label">Relationship w/ the HH head </label>
-                  
-                  <select class="form-control" id="reltohhhead" name="reltohhhead" required>
-                  <option>-Select here-</option>
-
-                  <option value="Head">1 - Head</option>
-                  <option value="Spouse">2 - Spouse</option>
-                  <option value="Son/Daughter">3 - Son/Daughter</option>
-                  <option value="Son-in-law/Daughter-in-law">4 - Son-in-law/Daughter-in-law</option>
-                  <option value="Grandson/Granddaughter">5 - Grandson/Granddaughter</option>
-                  <option value="Father/Mother">6 - Father/Mother</option>
-                  <option value="Grandfather/Grandmother">7 - GrandFather/GrandMother</option>
-                  
-                  <option value="Uncle/Auntie">8 - Uncle/Auntie</option>
-                  <option value="Brother/Sister">9 - Brother/Sister</option>
-                  <option value="Mother-in-law/Father-in-law">10 - Mother-in-law/Father-in-law</option>
-                  <option value="Cousin">11 - Cousin</option>
-                  <option value="Brother-in-law/Sister-in-law">12 - Brother-in-law/Sister-in-law</option>
-                  <option value="Niece/Nephew">13 - Niece/Nephew</option>
-                  <option value="Friend">14 - Friend</option>
-                </select>
-
-                </div>
-                 <div class="form-group col-md-3">
-                  <label class="control-label">Gender</label>
-                  <select class="form-control" id="gender" name="gender" required>
-                  <option>-Select here-</option>
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                </select>
-                </div>
-                 <div class="form-group col-md-3">
-                  <label class="control-label">Birthday</label>
-                  <input class="form-control" type="date" placeholder="Middle Name" name="bday">
-                </div>
-              </div>
-
-                  <div class="row">
-                <div class="form-group col-md-3">
-                  <label class="control-label">Place of Birth</label>
-                  <input class="form-control" type="text" placeholder="Place of Birth" name="pob">
-                </div>
-                 <div class="form-group col-md-3">
-                  <label class="control-label">Civil Status</label>
-                  <select class="form-control" id="civilstat" name="civilstat" required>
-                  <option>-Select here-</option>
-                  <option value="Single">1 - Single</option>
-                  <option value="Married">2 - Married</option>
-                  <option value="Widowed">3 - Widowed</option>
-                  <option value="Divorced/Separated">4 - Divorced/Separated</option>
-                  <option value="Common-law/Live-in">5 - Common-law/Live-in</option>
-                </select>
-                </div>
-                 <div class="form-group col-md-3">
-                  <label class="control-label">Contact Number</label>
-                  <input class="form-control" type="text"  maxlength="11" placeholder="Mobile Number" name="mnumber">
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="form-group col-md-3">
-                  <label class="control-label">Occupation</label>
-                  <input class="form-control" type="text" placeholder="Occupation" name="occupation">
-                </div>
-                 <div class="form-group col-md-3">
-                  <label class="control-label">Monthly Salary</label>
-                  <input class="form-control" type="number" placeholder="Monthly salary" name="salary">
-                </div>
-              
-              </div>
-               <div class="row">
-                <div class="form-group col-md-3">
-                  <label class="control-label"><b><font color="orange">Health Condition </font></b></label><br>
-  &ensp;&ensp; &ensp;&ensp;  <input class="form-check-input" type="checkbox" name="healthc[]" value="Diabetes"> 1 - Diabetes<br>
-  &ensp;&ensp; &ensp;&ensp; <input class="form-check-input" type="checkbox" name="healthc[]" value="Hypertension">2 - Hypertension <br>
-  &ensp;&ensp;  &ensp;&ensp; <input class="form-check-input" type="checkbox" name="healthc[]" value="Chronic Kidney Disease"> 3 - Chronic Kidney Disease <br>
-  &ensp;&ensp; &ensp;&ensp; <input class="form-check-input" type="checkbox" name="healthc[]" value="Cancer"> 4 - Cancer<br>
-                </div>
-                 <div class="form-group col-md-3">
-                  <label class="control-label">Beneficiary of Program</label>
-                  
-                  <select class="form-control" id="beneof" name="beneof" required>
-                  <option value="">-Select here-</option>
-                  <option value="None">None</option>
-                  <option value="Tulong Galing">1 - Tulong Galing</option>
-                  <option value="Bigay Pag-asa">2 - Bigay Pag-asa</option>
-                  <option value="BHW">3 - BHW</option>
-                  <option value="PWD">4 - PWD</option>
-                  <option value="Tanod">5 - Tanod</option>
-                  <option value="Senior Citizen">6 – Senior Citizen</option>
-                </select>
-                </div>
-
-              </div>
-               <div class="row">
-                <div class="form-group col-md-3">
-                  <label class="control-label">Vaccnated ?</label>
-                   <select class="form-control" id="vaccinated" name="vaccinated" required>
-                  <option>-Select here-</option>
-                  <option value="Yes">Yes</option>
-                  <option value="No">No</option>
-                </select>
-                </div>
-                 <div class="form-group col-md-3">
-                  <label class="control-label">If yes, Vaccine Name</label>
-                   <select class="form-control" id="vaccine" name="vaccine" required>
-                  <option>-Select here-</option>
-                  <option value="ASTRAZENECA">ASTRAZENECA</option>
-                  <option value="JANSSEN">JANSSEN</option>
-                  <option value="MODERNA">MODERNA</option>
-                  <option value="PFIZER">PFIZER</option>
-                  <option value="SINOPHARM">SINOPHARM</option>
-                  <option value="SINOVAC">SINOVAC</option>
-                  <option value="SPUTNIK LITE">SPUTNIK LITE</option>
-                  <option value="SPUTNIK V">SPUTNIK V</option>
-
-                </select>
-                </div>   
-              </div>
-                <div class="row">
-                 <div class="form-group col-md-3">
-                  <label class="control-label">Role</label>
-                 <select class="form-control" id="role" name="role" required>
-                  <option></option>
-                  <?php if ($noheadrecord == "norecord") {
-                    echo  "
-                  <option value='Head'>HEAD</option>
-                  <option value='Member'>Household Member</option>
-                  <option value='Secondary Head'>Secondary Head</option>";
-                  }else {echo  "
-                  
-                  <option value='Member'>Household Member</option>
-                  <option value='Secondary Head'>Secondary Head</option>";
-
-                  }
-                  ?>  
-                </select>
-                  
-                </div>
-          
-
-            </div>
-
-             <button class="btn btn-primary" name="addmember" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Add</button>
-               </form>
-        
-        </div></div></div>
-
-<?php  
-   $hhid = $_GET['id'];
-
-   ?>
-</div></div></div></div>
+  <d</div></div>
 <div class="modal fade" id="verify" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
      <form class="row" method="post" role="form">
@@ -2071,7 +1447,7 @@ if(isset($_POST['edithead'])){
       </div>
       <div class="modal-body">
                             <input type="hidden" name="verifyid" value="<?php echo $hhid; ?>">
-                           <div class="alert alert-primary">Are you sure this houshold  is <?php echo $hhid; ?> verified?</div>
+                           <div class="alert alert-primary">Are you sure this Beneficiary  is <?php echo $hhid; ?> verified?</div>
                           <div class="modal-footer">
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

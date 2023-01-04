@@ -134,7 +134,7 @@ if(isset($_SESSION['username'])){
         <li class="treeview is-expanded"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-th-list"></i><span class="app-menu__label">Tables</span><i class="treeview-indicator fa fa-angle-right"></i></a>
           <ul class="treeview-menu">
         
-            <li><a class="treeview-item active" href="page1.php"><i class="icon fa fa-circle-o"></i>Client Enrollment</a></li>
+            <li><a class="treeview-item active" href="page1.php"><i class="icon fa fa-circle-o"></i>Beneficiary Enrollment</a></li>
 
                 <li><a class="treeview-item" href="householdrequests.php"><i class="icon fa fa-circle-o"></i>Transactions</a></li>
         
@@ -198,41 +198,44 @@ if(isset($_SESSION['username'])){
                   <tbody>
                   <?php 
                  
-                    $sql = "SELECT * from tbl_household ORDER BY hhid DESC limit 30";
+                    $sql = "SELECT * FROM `tbl_people`";
                     $result = $conn->query($sql);
                     if ($result->num_rows > 0) {
                         // output data of each row
                         while($row = $result->fetch_assoc()) {
-                            $id = $row['hhid'];
+                            $id= $row["id"];
+                            $hhid = $row['hhid'];
                             $barangay= $row['barangay'];
-                            $classification= $row['classification'];
-                            $addline1 = $row['add_line1'];
+                            $fname = $row['fname'];
+                            $mname  = $row['mname'];
+                            $lname = $row['lname'];
+                            $xname = $row['xname'];
+                            $sector = $row['sector'];
                             
-                            $vaccinated = $row['fullyvaccinatedhh'];
                          ?>
 
 
 
       
                    
-                      <td><?php echo $id ?></td>
+                      <td><?php echo $hhid ?></td>
                       <td><?php echo $barangay?></td>
-                      <td><?php echo $classification?></td>
+                      <td><?php echo $fname." ".$mname." ".$lname;?></td>
                    
-                      <td><?php echo $vaccinated ?></td>
+                      <td><?php echo $sector ?></td>
                  
                    
                     
                    
 
 <td>
-<a href="household.php?id=<?php echo $id?>">
+<a href="household.php?id=<?php echo $hhid?>">
 <button type='button' class='btn btn-info btn-sm'><i class="fa fa-list" aria-hidden="true"></i></button>
 
  <!--EDIT <a href="#edit<?php echo $id;?>" data-toggle="modal"><button type='button' class='btn btn-warning btn-sm'>
   <i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></a>-->
 
-  <a href="#delete<?php echo $id; ?>" data-toggle="modal"><button type='button' class='btn btn-danger btn-sm'><i class="fa fa-trash-o" aria-hidden="true"></i></i>
+  <a href="#delete<?php echo $hhid; ?>" data-toggle="modal"><button type='button' class='btn btn-danger btn-sm'><i class="fa fa-trash-o" aria-hidden="true"></i></i>
   </button></a>
 </td>
 </tr>
@@ -470,40 +473,33 @@ if(isset($_POST['edit_item'])){
 
 
 }
- if(isset($_POST['add_item'])){
+ if(isset($_POST['addmember'])){
 
                        
-                        $addline1 = $_POST['addline1'];
+                        $fname = $_POST['fname'];
+                        $mname = $_POST['mname'];
+                        $lname = $_POST['lname'];
+                        $xname = $_POST['xname'];
                         $barangay = $_POST['barangay'];
-                        $classification = $_POST['classification'];
-                        $vaccinated = $_POST['vaccinated'];
-                       //programs
-                        $chckbox = $_POST['program'];
-                        $chck= "";
-                        foreach ($chckbox  as $chckboxresult) {
-                          $chck.=$chckboxresult.",";
-                        }
+                        $gender = $_POST['gender'];
+                        $bday = $_POST['bday'];
+                        $pob = $_POST['pob'];
+                        $civilstat = $_POST['civilstat'];
+                        $mnumber = $_POST['mnumber'];
+                        $sector = $_POST['sector'];
+                       
 
-                       //responsible pet
-                         $pet = $_POST['selectpet'];
-                         $vaxcat = $_POST['vaxcat'];
-                         $vaxdog = $_POST['vaxdog'];
-                         $catcount = $_POST['catcount'];
-                         $dogcount = $_POST['dogcount'];
+                      $sql = "SELECT * FROM `tbl_people` WHERE fname = '$fname' and mname='$mname' and lname = '$lname' and xname = '$xname' and bday = '$bday'";
+                    $result = $conn->query($sql);
+                    if ($result->num_rows > 0) {
+                        // output data of each row
+                    $row = $result->fetch_assoc();
+                           $hhidcheck = $row['hhid'];
+                            echo "<script type='text/javascript'>alert(\"Client Recort already exists $hhid\")</script>";
+           echo "<script>window.location.href='household.php?id=$hhidcheck'</script>";
 
-                      //smoke free
-                         $hhsmokers = $_POST['hhsmokers'];
-                         $smokercount = $_POST['smokercount'];
-
-                      //waste
-                         $segregating = $_POST['segregating'];
-                         $garbagecount = $_POST['garbagecount'];
-                      //waste
-                         $elemcount = $_POST['elemcount'];
-                         $hscount = $_POST['hscount'];
-                         $collegecount = $_POST['collegecount'];
-
-                    $sql = "SELECT * from tbl_household WHERE barangay = '$barangay' ORDER BY hhid DESC limit 1";
+}
+                    $sql = "SELECT * from tbl_household ORDER BY hhid DESC limit 1";
                     $result = $conn->query($sql);
                     $result->num_rows;
                         // output data of each row
@@ -517,35 +513,32 @@ $autohhid = $getlastid + 1;
  $resultc = $conn->query($sqlc);
     if ($resultc->num_rows > 0) {
 
-   echo "<script type='text/javascript'>alert(\"House Hold ID already exists\")</script>";
+   echo "<script type='text/javascript'>alert(\"House Hold ID already exists $autohhid\")</script>";
            echo "<script>window.location.href='page1.php'</script>";
               }else  {
 
- $sql = "INSERT INTO `tbl_household` (`id`, `hhid`, `add_line1`, `barangay`,`classification`, `program`, `fullyvaccinatedhh`, `encoderid`) VALUES (NULL, '$autohhid', '$addline1', '$barangay','$classification', '$chck', '$vaccinated', '$cidd')";
+ $sql = "INSERT INTO `tbl_household` (`id`, `hhid`, `add_line1`, `barangay`,`encoderid`) VALUES (NULL, '$autohhid', '', 'barangay','$cidd')";
 
 
 if ($conn->query($sql) === TRUE) {  
- $sqlc = "SELECT * from  tbl_hhpet WHERE hhid = $autohhid";
- $resultc = $conn->query($sqlc);
-    if ($resultc->num_rows > 0) {
 
-   echo "<script type='text/javascript'>alert(\"House hold already exists \")</script>";
+
+
+ $sql = "INSERT INTO `tbl_people` (`id`, `hhid`, `lname`, `fname`, `mname`, `xname`, `gender`, `bday`, `placeofbirth`, `civilstatus`, `phone`, `sector`, `barangay`) VALUES (NULL, '$autohhid', '$lname', '$fname', '$mname', '$xname', '$gender', '$bday', '$pob', '$civilstat', '$mnumber', '$sector', '$barangay')";
+
+
+if ($conn->query($sql) === TRUE) {  
+
+  
+   echo "<script type='text/javascript'>alert(\"Successfully added record id is : $autohhid \")</script>";
            echo "<script>window.location.href='page1.php'</script>";
-              }else  {
- 
 
 
+}
 
- $sqlhhpet = "INSERT INTO `tbl_hhpet` (`hhid`, `havepet`, `cat`, `dog`, `vaxcat`, `vaxdog`, `smoker`, `countsmoker`, `segregate`, `segregatecount`, `elemcount`, `hscount`, `collegecount`) VALUES ('$autohhid', '$pet', '$catcount', '$dogcount', '$vaxcat', '$vaxdog', '$hhsmokers', '$smokercount', '$segregating', '$garbagecount', '$elemcount', '$hscount', '$collegecount')";
- 
-if ($conn->query($sqlhhpet) === TRUE) {  
-
-
-   echo "<script type='text/javascript'>alert(\"Successfully added household id is : $autohhid \")</script>";
-           echo "<script>window.location.href='page1.php'</script>";
          
       
-}}}}}
+}}}
 ///aaaaaaaaaaaaaaaaaaaaaaa search
 if(isset($_POST['searchid'])){
                         $hhid = $_POST['searchidbox'];
@@ -568,13 +561,16 @@ if(isset($_POST['searchid'])){
      <form class="row" method="post" role="form">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Search HouseHold</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Search Beneficiary</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-      <label>Input HouseHold ID: </label> <input type="text" name="searchidbox" required>
+      <label>Search </label> 
+      <input class="form-control" type="text" name="fname" required>
+      <input class="form-control" type="text" name="mname" required>
+      <input class="form-control" type="text" name="lname" required>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -604,6 +600,10 @@ if(isset($_POST['searchid'])){
                  <div class="form-group col-md-3">
                   <label class="control-label">Middle Name</label>
                   <input class="form-control" type="x" placeholder="Middle Name" name="mname">
+                </div>
+                 <div class="form-group col-md-3">
+                  <label class="control-label">Ext Name</label>
+                  <input class="form-control" type="x" placeholder="Extension Name" name="xname">
                 </div>
               </div>
                 <div class="row">
@@ -654,7 +654,7 @@ if(isset($_POST['searchid'])){
                 </div>
                  <div class="form-group col-md-3">
                   <label class="control-label">Birthday</label>
-                  <input class="form-control" type="date" placeholder="Middle Name" name="bday">
+                  <input class="form-control" type="date" placeholder="BDAY" name="bday">
                 </div>
               </div>
 
@@ -681,98 +681,35 @@ if(isset($_POST['searchid'])){
               </div>
 
               <div class="row">
-                <div class="form-group col-md-3">
-                  <label class="control-label">Occupation</label>
-                  <input class="form-control" type="text" placeholder="Occupation" name="occupation">
-                </div>
-                 <div class="form-group col-md-3">
-                  <label class="control-label">Monthly Salary</label>
-                  <input class="form-control" type="number" placeholder="Monthly salary" name="salary">
+               <div class="form-group col-md-3">
+                  <label class="control-label">Sector</label>
+                  <select class="form-control" id="civilstat" name="sector" required>
+                  <option>-Select here-</option>
+                  <option value="CHILDREN">CHILDREN</option>
+                  <option value="FAMILY HEAD">FAMILY HEAD</option>
+                  <option value="PWD">PWD</option>
+                  <option value="SENIOR">SENIOR</option>
+                  <option value="SOLO PARENT">SOLO PARENT</option>
+                  <option value="WOMEN">WOMEN</option>
+                  <option value="4PS">4PS</option>
+                  <option value="YOUTH">YOUTH</option>
+                  <option value="ADULT">ADULT</option>
+
+                </select>
                 </div>
               
               </div>
-               <div class="row">
-                <div class="form-group col-md-3">
-                  <label class="control-label"><b><font color="orange">Health Condition </font></b></label><br>
-  &ensp;&ensp; &ensp;&ensp;  <input class="form-check-input" type="checkbox" name="healthc[]" value="Diabetes"> 1 - Diabetes<br>
-  &ensp;&ensp; &ensp;&ensp; <input class="form-check-input" type="checkbox" name="healthc[]" value="Hypertension">2 - Hypertension <br>
-  &ensp;&ensp;  &ensp;&ensp; <input class="form-check-input" type="checkbox" name="healthc[]" value="Chronic Kidney Disease"> 3 - Chronic Kidney Disease <br>
-  &ensp;&ensp; &ensp;&ensp; <input class="form-check-input" type="checkbox" name="healthc[]" value="Cancer"> 4 - Cancer<br>
-                </div>
-                 <div class="form-group col-md-3">
-                  <label class="control-label">Beneficiary of Program</label>
-                  
-                  <select class="form-control" id="beneof" name="beneof" required>
-                  <option value="">-Select here-</option>
-                  <option value="None">None</option>
-                  <option value="Tulong Galing">1 - Tulong Galing</option>
-                  <option value="Bigay Pag-asa">2 - Bigay Pag-asa</option>
-                  <option value="BHW">3 - BHW</option>
-                  <option value="PWD">4 - PWD</option>
-                  <option value="Tanod">5 - Tanod</option>
-                  <option value="Senior Citizen">6 – Senior Citizen</option>
-                </select>
-                </div>
-
-              </div>
-               <div class="row">
-                <div class="form-group col-md-3">
-                  <label class="control-label">Vaccnated ?</label>
-                   <select class="form-control" id="vaccinated" name="vaccinated" required>
-                  <option>-Select here-</option>
-                  <option value="Yes">Yes</option>
-                  <option value="No">No</option>
-                </select>
-                </div>
-                 <div class="form-group col-md-3">
-                  <label class="control-label">If yes, Vaccine Name</label>
-                   <select class="form-control" id="vaccine" name="vaccine" required>
-                  <option>-Select here-</option>
-                  <option value="ASTRAZENECA">ASTRAZENECA</option>
-                  <option value="JANSSEN">JANSSEN</option>
-                  <option value="MODERNA">MODERNA</option>
-                  <option value="PFIZER">PFIZER</option>
-                  <option value="SINOPHARM">SINOPHARM</option>
-                  <option value="SINOVAC">SINOVAC</option>
-                  <option value="SPUTNIK LITE">SPUTNIK LITE</option>
-                  <option value="SPUTNIK V">SPUTNIK V</option>
-
-                </select>
-                </div>   
-              </div>
-                <div class="row">
-                 <div class="form-group col-md-3">
-                  <label class="control-label">Role</label>
-                 <select class="form-control" id="role" name="role" required>
-                  <option></option>
-                  <?php if ($noheadrecord == "norecord") {
-                    echo  "
-                  <option value='Head'>HEAD</option>
-                  <option value='Member'>Household Member</option>
-                  <option value='Secondary Head'>Secondary Head</option>";
-                  }else {echo  "
-                  
-                  <option value='Member'>Household Member</option>
-                  <option value='Secondary Head'>Secondary Head</option>";
-
-                  }
-                  ?>  
-                </select>
+             
                   
                 </div>
           
 
-            </div>
 
              <button class="btn btn-primary" name="addmember" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Add</button>
                </form>
         
         </div></div></div>
 
-<?php  
-   $hhid = $_GET['id'];
-
-   ?>
 </div>
                  </form>
 

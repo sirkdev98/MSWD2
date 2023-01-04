@@ -165,12 +165,7 @@ if(isset($_SESSION['username'])){
                  $row = $result2->fetch_assoc();
                             $pendingreq = $row['pendingreq'];
                        
- }
- $sql2 = "SELECT count(*) as vhh from tbl_household WHERE verified = 'yes'";
-                  $result2 = $conn->query($sql2);
-           if ($result2->num_rows > 0) {
-                 $row = $result2->fetch_assoc();
-                            $vhh = $row['vhh'];
+ 
                        
  }
   $sql2 = "SELECT sum(appamount) as gltotal from assistance WHERE tos = 'GL'";
@@ -238,14 +233,7 @@ if(isset($_SESSION['username'])){
 
 
 <div class="row">
-        <div class="col-md-6 col-lg-3">
-          <div class="widget-small primary coloured-icon"><i class="icon fa fa-check fa-3x"></i>
-            <div class="info">
-              <h4>Verified House Holds</h4>
-              <p><b><h3><font color="green"><?php echo $vhh; ?></font></b></p></h3>
-            </div>
-          </div>
-        </div>
+       
         <div class="col-md-6 col-lg-3">
           <div class="widget-small info coloured-icon"><i class="icon fa fa-exclamation fa-3x"></i>
             <div class="info">

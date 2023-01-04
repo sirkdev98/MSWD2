@@ -24,7 +24,7 @@ $id = $_GET['id'];
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "bto";
+$dbname = "bastatagaorani";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);

@@ -48,7 +48,7 @@ $hhid = $_GET['id'];
     <meta property="og:url" content="http://pratikborsadiya.in/blog/vali-admin">
     <meta property="og:image" content="http://pratikborsadiya.in/blog/vali-admin/hero-social.png">
     <meta property="og:description" content="Vali is a responsive and free admin theme built with Bootstrap 4, SASS and PUG.js. It's fully customizable and modular.">
-    <title>BTO-House Hold Enrollment </title>
+    <title>CASHLESS</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -134,7 +134,7 @@ $hhid = $_GET['id'];
         <li class="treeview is-expanded"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-th-list"></i><span class="app-menu__label">Tables</span><i class="treeview-indicator fa fa-angle-right"></i></a>
           <ul class="treeview-menu">
         
-            <li><a class="treeview-item" href="page1.php"><i class="icon fa fa-circle-o"></i>House Hold Enrollment</a></li>
+            <li><a class="treeview-item" href="page1.php"><i class="icon fa fa-circle-o"></i>Beneficiary Enrollment</a></li>
 
                 <li><a class="treeview-item active" href="householdrequests.php"><i class="icon fa fa-circle-o"></i>Transactions</a></li>
 
@@ -372,6 +372,7 @@ $hhid = $_GET['id'];
                             $lname = $row['lname'];
                             $fname= $row['fname'];
                             $mname= $row['mname'];
+                            $xname= $row['xname'];
                             $cdate= $row['cdate'];
                             $relationship = $row['relationship'];
                             $barangay= $row['Barangay'];
@@ -386,6 +387,10 @@ $hhid = $_GET['id'];
                             $status= $row['status'];
                             $notes= $row['notes'];
                             $category = $row['category'];
+                            $cfname = $row['clientfname'];
+                            $cmname = $row['clientmname'];
+                            $clname = $row['clientlname'];
+                            $cxname = $row['clientxname'];
                            $fullname = $fname." ".$mname." ".$lname;
                            ?>
 
@@ -415,10 +420,10 @@ $hhid = $_GET['id'];
 
 
 <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="assistanceedit<?php echo $id; ?>">
-  <div class="modal-dialog modal-xl">
+   <div class="modal-dialog modal-xl">
          <div class="modal-content">
           <div class="tile">
-            <h3 class="tile-title">Edit/Print Assistance <?php echo $id ?> </h3>
+            <h3 class="tile-title">Edit/Print Assistance <?php echo $id; ?> </h3>
             <div class="tile-body">
                 <form method="post" role="form">
                   <input class="form-control" type="text" placeholder="Last Name" name="editid" hidden value="<?php echo $id; ?>">
@@ -428,22 +433,46 @@ $hhid = $_GET['id'];
                   <input class="form-control" type="text" readonly placeholder="Last Name" name="lname" value="<?php echo $status  ; ?>">
                 </div>   </div>
               <div class="row">
+
                 <div class="form-group col-md-3">
                   <label class="control-label">Last Name</label>
-                  <input class="form-control" type="text" placeholder="Last Name" name="lname" value="<?php echo $lname; ?>">
+                  <input class="form-control" type="text" placeholder="Last Name" name="lname" value="<?php echo $lname; ?>"readonly>
                 </div>
                  <div class="form-group col-md-3">
                   <label class="control-label">First Name</label>
-                  <input class="form-control" type="text" placeholder="First Name" name="fname" value="<?php echo $fname; ?>">
+                  <input class="form-control" type="text" placeholder="First Name" name="fname" value="<?php echo $fname; ?>"readonly>
                 </div>
                  <div class="form-group col-md-3">
                   <label class="control-label">Middle Name</label>
-                  <input class="form-control" type="x" placeholder="Middle Name" name="mname" value="<?php echo $mname; ?>">
+                  <input class="form-control" type="x" placeholder="Middle Name" name="mname" value="<?php echo $mname; ?>"readonly>
+                </div>
+                <div class="form-group col-md-3">
+                  <label class="control-label">Ext Name</label>
+                  <input class="form-control" type="x" placeholder="Ext Name" name="mname" value="<?php echo $xname; ?>"readonly>
                 </div>
                  <div class="form-group col-md-3">
                   <label class="control-label">Date</label>
                   <input class="form-control" type="date" placeholder="Date" name="editdate" value="<?php echo $cdate; ?>">
                 </div>
+              </div>
+               <div class="row">
+                <div class="form-group col-md-3">
+                  <label class="control-label">Client Last Name</label>
+                  <input class="form-control" type="text" placeholder="Last Name" name="clname" value="<?php echo $clname; ?>">
+                </div>
+                 <div class="form-group col-md-3">
+                  <label class="control-label">Client First Name</label>
+                  <input class="form-control" type="text" placeholder="First Name" name="cfname" value="<?php echo $cfname; ?>">
+                </div>
+                 <div class="form-group col-md-3">
+                  <label class="control-label">Client Middle Name</label>
+                  <input class="form-control" type="x" placeholder="Middle Name" name="cmname" value="<?php echo $cmname; ?>">
+                </div>
+                 <div class="form-group col-md-3">
+                  <label class="control-label">Client Ext Name</label>
+                  <input class="form-control" type="x" placeholder="Ext Name" name="cxname" value="<?php echo $cxname; ?>">
+                </div>
+                
               </div>
                 <div class="row">
                 <div class="form-group col-md-3">
@@ -532,13 +561,16 @@ $hhid = $_GET['id'];
                 </div>
                   <div class="form-group col-md-3">
                   <label class="control-label">Burial/Illness</label>
-                  <select class="form-control" id = "ddburial" name="burialorillness" required>
+                  <select class="form-control" id="burialorillness" name="burialorillness" required>
                   <option value="<?php echo $type; ?>"><?php echo $type; ?></option>
                   <option value="Burial">Burial</option>
                   <option value="Illness">Illness</option>  
                 </select>
                 </div>
+           
 
+             
+            
        
                   <div class="form-group col-md-3" id="dvillness">
                   <label class="control-label">Type the Illness</label>
