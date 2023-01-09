@@ -568,9 +568,10 @@ if(isset($_POST['searchid'])){
       </div>
       <div class="modal-body">
       <label>Search </label> 
-      <input class="form-control" type="text" name="fname" required>
-      <input class="form-control" type="text" name="mname" required>
-      <input class="form-control" type="text" name="lname" required>
+      <input class="form-control" type="text" name="fname" placeholder ="First Name" required>
+      <input class="form-control" type="text" name="mname" placeholder ="Middle Name">
+      <input class="form-control" type="text" name="lname" placeholder ="Last Name" required>
+      <input class="form-control" type="text" name="xname" placeholder ="xname">
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
