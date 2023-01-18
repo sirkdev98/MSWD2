@@ -426,7 +426,10 @@ $hhid = $_GET['id'];
                   <label class="control-label">Client Ext Name</label>
                   <input class="form-control" type="x" placeholder="Ext Name" name="cxname" >
                 </div>
-                
+                <div class="form-group col-md-3">
+                  <label class="control-label">Client Relationship w/ Bene</label>
+                  <input class="form-control" type="x" placeholder="Relationship" name="relpost" >
+                </div>
               </div>
                 <div class="row">
                 <div class="form-group col-md-3">
@@ -479,6 +482,7 @@ $hhid = $_GET['id'];
   <option value="ICMC">ICMC</option>
   <option value="ST. Joseph">ST. Joseph</option>
   <option value="OMP">Orani Memorial Park</option>
+  <option value="JEC PHARMACY">JEC PHARMACY</option>
   <option value="OTHERS">OTHERS</option>
   
                 </select>
@@ -622,7 +626,7 @@ Sector : <font color="blue" size="+1"><?php echo $sector;?> </font></p>
                             $fname= $row['fname'];
                             $mname= $row['mname'];
                             $cdate= $row['cdate'];
-                            $relationship = $row['relationship'];
+                            $rel = $row['relationship'];
                             $barangay= $row['Barangay'];
                             $reqservice= $row['reqservice'];
                             $reqamount= $row['reqamount'];
@@ -718,6 +722,10 @@ Sector : <font color="blue" size="+1"><?php echo $sector;?> </font></p>
                  <div class="form-group col-md-3">
                   <label class="control-label">Client Ext Name</label>
                   <input class="form-control" type="x" placeholder="Ext Name" name="cxname" value="<?php echo $cxname; ?>">
+                </div>
+                <div class="form-group col-md-3">
+                  <label class="control-label">Client Relationship w/ Bene</label>
+                  <input class="form-control" type="x" placeholder="Relationship" name="rel" value="<?php echo $rel; ?>">
                 </div>
                 
               </div>
@@ -830,7 +838,7 @@ Sector : <font color="blue" size="+1"><?php echo $sector;?> </font></p>
                echo "
 
 
-               <a href='pdftest.php?id=$id'>
+               <a href='pdftest.php?id=$assistanceid'>
 <button type='button' class='btn btn-success'><i class='fa fa-print fa-lg'  aria-hidden='true'> Print PDF</i></button></a>";
              }  ?>
           
@@ -1027,7 +1035,7 @@ SELECT * FROM assistance WHERE id = '$delete_id'";
 
 if(isset($_POST['edit_assistance'])){
 
-                        $edit = $_POST['editid'];  
+                        $editid = $_POST['editid'];  
                         $id = $hhid;
                         $lname = $_POST['lname'];
                         $fname = $_POST['fname'];
@@ -1038,6 +1046,7 @@ if(isset($_POST['edit_assistance'])){
                         $cfname = $_POST['cfname'];
                         $cmname = $_POST['cmname'];
                         $cxname = $_POST['cxname'];
+                        $rel = $_POST['rel'];
                         
                         $date = $_POST['editdate'];
                         $reqservice = $_POST['reqservice'];
@@ -1048,7 +1057,7 @@ if(isset($_POST['edit_assistance'])){
                         $burialorillness = $_POST['burialorillness'];
 
 
-                    $sqlget = "SELECT tbl_household.hhid, tbl_people.relationship, tbl_people.fname,tbl_household.barangay, tbl_people.mname, tbl_people.lname FROM tbl_household INNER JOIN tbl_people ON tbl_people.hhid= tbl_household.hhid WHERE tbl_people.id= '$beneid'";
+                    $sqlget = "SELECT tbl_household.hhid, tbl_people.fname,tbl_household.barangay, tbl_people.mname, tbl_people.lname FROM tbl_household INNER JOIN tbl_people ON tbl_people.hhid= tbl_household.hhid WHERE tbl_people.id= '$beneid'";
                     
 
 
@@ -1058,7 +1067,7 @@ if(isset($_POST['edit_assistance'])){
                         // output data of each row
               $row = $result->fetch_assoc();
                             $selectedhhid = $row['hhid'];
-                             $relationship = $row['relationship'];
+                            
                               $barangay = $row['barangay'];
                         
 
@@ -1066,13 +1075,13 @@ if(isset($_POST['edit_assistance'])){
 }
               
 
- $sql = "UPDATE `assistance` SET `cdate` = '$date', `lname` = '$lname', `fname` = '$fname', `mname` = '$mname', `xname` = '$xname', `Barangay` = '$barangay', `reqservice` = '$reqservice', `reqamount` = '$reqamount', `appservice` = '$appservice', `appamount` = '$appamount', `tos` = '$tos', `servicepro` = '$servicepro', `type` = '$type', `typeofillness` = '$typeofillness', `category` = '$category', `status` = '$status', `notes` = '$notes', `clientfname` = '$cfname', `clientmname` = '$cmname', `clientlname` = '$clname', `clientxname` = '$cxname' WHERE `assistance`.`id` ='$edit'";
+ $sql = "UPDATE `assistance` SET `cdate` = '$date', `lname` = '$lname', `fname` = '$fname', `mname` = '$mname', `xname` = '$xname',`relationship` = '$rel', `Barangay` = '$barangay', `reqservice` = '$reqservice', `reqamount` = '$reqamount', `appservice` = '$appservice', `appamount` = '$appamount', `tos` = '$tos', `servicepro` = '$servicepro', `type` = '$type', `typeofillness` = '$typeofillness', `category` = '$category', `status` = '$status', `notes` = '$notes', `clientfname` = '$cfname', `clientmname` = '$cmname', `clientlname` = '$clname', `clientxname` = '$cxname' WHERE `assistance`.`id` ='$editid'";
 
 
 
 if ($conn->query($sql) === TRUE) {  
 
-   echo "<script type='text/javascript'>alert(\"Successfully edited  \")</script>";
+   echo "<script type='text/javascript'>alert(\"Successfully edited $editid \")</script>";
            echo "<script>window.location.href='household.php?id=$hhid'</script>"; 
          }  else{
 
@@ -1224,7 +1233,7 @@ if ($conn->query($sql) === TRUE) {
                         $cfname = $_POST['cfname'];
                         $cmname = $_POST['cmname'];
                         $cxname =$_POST['cxname'];
-                        
+                         $rel =$_POST['rel'];
                         $date = $_POST['date'];
                         $reqservice = $_POST['reqservice'];
                         $reqamount = $_POST['reqamount'];
@@ -1235,7 +1244,7 @@ if ($conn->query($sql) === TRUE) {
                         $typeofillness= $_POST ['typeofillness'];
 
 
-                    $sqlget = "SELECT tbl_household.hhid, tbl_people.relationship, tbl_people.fname,tbl_household.barangay, tbl_people.mname, tbl_people.lname FROM tbl_household INNER JOIN tbl_people ON tbl_people.hhid= tbl_household.hhid WHERE tbl_people.id= '$beneid'";
+                    $sqlget = "SELECT tbl_household.hhid, tbl_people.fname,tbl_household.barangay, tbl_people.mname, tbl_people.lname FROM tbl_household INNER JOIN tbl_people ON tbl_people.hhid= tbl_household.hhid WHERE tbl_people.id= '$beneid'";
                     
 
 
@@ -1253,7 +1262,7 @@ if ($conn->query($sql) === TRUE) {
 }
      
 
- $sql = "INSERT INTO `assistance` (`id`, `hhid`, `clientid`, `cdate`, `lname`, `fname`, `mname`,`xname`,`Barangay`, `reqservice`, `reqamount`, `appservice`, `appamount`, `tos`, `servicepro`, `type`,`typeofillness`, `category`, `status`, `notes`, `clientfname`, `clientmname`, `clientlname`, `clientxname`)VALUES (NULL, '$id','$client', '$date', '$lname', '$fname', '$mname','$xname','$barangay', '$reqservice', '$reqamount', '', '', '$type', '$servicepro', '$burialorillness','$typeofillness','$category', 'pending', '','$cfname', '$cmname', '$clname', '$cxname')";
+ $sql = "INSERT INTO `assistance` (`id`, `hhid`, `clientid`, `cdate`, `lname`, `fname`, `mname`,`xname`,`relationship`,`Barangay`, `reqservice`, `reqamount`, `appservice`, `appamount`, `tos`, `servicepro`, `type`,`typeofillness`, `category`, `status`, `notes`, `clientfname`, `clientmname`, `clientlname`, `clientxname`)VALUES (NULL, '$id','$beneid', '$date', '$lname', '$fname', '$mname','$xname','$rel','$barangay', '$reqservice', '$reqamount', '', '', '$type', '$servicepro', '$burialorillness','$typeofillness','$category', 'pending', '','$cfname', '$cmname', '$clname', '$cxname')";
 
  
 

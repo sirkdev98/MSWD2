@@ -233,7 +233,7 @@ if(isset($_SESSION['username'])){
 
 
 <div class="row">
-       
+          
         <div class="col-md-6 col-lg-3">
           <div class="widget-small info coloured-icon"><i class="icon fa fa-exclamation fa-3x"></i>
             <div class="info">

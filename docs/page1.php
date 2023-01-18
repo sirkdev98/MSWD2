@@ -517,7 +517,7 @@ $autohhid = $getlastid + 1;
            echo "<script>window.location.href='page1.php'</script>";
               }else  {
 
- $sql = "INSERT INTO `tbl_household` (`id`, `hhid`, `add_line1`, `barangay`,`encoderid`) VALUES (NULL, '$autohhid', '', 'barangay','$cidd')";
+ $sql = "INSERT INTO `tbl_household` (`id`, `hhid`, `add_line1`, `barangay`,`encoderid`) VALUES (NULL, '$autohhid', '', '$barangay','$cidd')";
 
 
 if ($conn->query($sql) === TRUE) {  

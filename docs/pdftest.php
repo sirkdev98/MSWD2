@@ -47,6 +47,10 @@ if ($conn->connect_error) {
                             $mname = $row['mname'];
                             $clientid= $row['clientid'];
 
+                            $clientfname = $row['clientfname'];
+                            $clientmname = $row['clientmname'];
+                            $clientlname = $row['clientlname'];
+                            $clientxname = $row['clientxname'];
                             $relationship = $row['relationship'];
                             $barangay =$row['Barangay'];
                             $reqservice = $row['reqservice'];
@@ -58,7 +62,9 @@ if ($conn->connect_error) {
                             $type = $row['type'];
                             $category = $row['category'];
                             $clname = $fname." ".$mname." ".$lname;
+                            $clientname = $clientfname." ".$clientmname." ".$clientlname." ".$clientxname;
                             $bename = $clname;
+                            $clientname=strtoupper($clientname);
                             $clname=strtoupper($clname);
                             $bename=strtoupper($clname);
 
@@ -288,6 +294,19 @@ $pdf ->Cell(10,10,'',0,0);
 $pdf ->Cell(50,5,'Balanga City, Bataan',0,1);
 }
 
+else if($servicepro =='JEC PHARMACY') {
+
+
+$pdf->SetFont('Arial', 'B', 12);
+$pdf ->Cell(10,10,'',0,0);
+$pdf ->Cell(55,5,'JEC PHARMACY',0,1);
+$pdf->SetFont('Arial', '', 12);
+$pdf ->Cell(10,10,'',0,0);
+$pdf ->Cell(65,5,'Barangay Mulawin',0,1);
+$pdf ->Cell(10,10,'',0,0);
+$pdf ->Cell(50,5,'Orani, Bataan',0,1);
+}
+
 
 
 
@@ -359,7 +378,7 @@ $pdf ->Cell(10,8,'_______________________',0,0);
 $pdf ->Cell(20,8,$appservice,0,1);
 $pdf ->Cell(20,8,'',0,0);
 $pdf ->Cell(55,8,'This is upon the request of _____________________________, ',0,0);
-$pdf ->Cell(65,8,$clname,0,0);
+$pdf ->Cell(65,8,$clientname,0,0);
 
 $pdf ->Cell(1,8,"     ".$relationship,0,0);
 $pdf ->Cell(10,8,'__________________',0,1);
