@@ -134,11 +134,10 @@ if(isset($_SESSION['username'])){
         <li class="treeview is-expanded"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-th-list"></i><span class="app-menu__label">Tables</span><i class="treeview-indicator fa fa-angle-right"></i></a>
           <ul class="treeview-menu">
         
-            <li><a class="treeview-item active" href="page1.php"><i class="icon fa fa-circle-o"></i>Beneficiary Enrollment</a></li>
+            <li><a class="treeview-item" href="page1.php"><i class="icon fa fa-circle-o"></i>Beneficiary Enrollment</a></li>
 
                 <li><a class="treeview-item" href="householdrequests.php"><i class="icon fa fa-circle-o"></i>Transactions</a></li>
-                <li><a class="treeview-item" href="householdrequestspending.php"><i class="icon fa fa-circle-o"></i>For approval</a></li>
-                <li><a class="treeview-item" href="servicepro.php"><i class="icon fa fa-circle-o"></i>Service Providers</a></li>
+                <li><a class="treeview-item active" href="servicepro.php"><i class="icon fa fa-circle-o"></i>Service Providers</a></li>
         
           </ul>
         </li>
@@ -177,8 +176,7 @@ if(isset($_SESSION['username'])){
         </ul>
       </div>
 
-<button type="button" class="btn btn-success" data-toggle="modal" data-target="#xl">+ Add Client</button>
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">SEARCH CLIENT</button>
+<button type="button" class="btn btn-success" data-toggle="modal" data-target="#xl">+ Add Service Provider</button>
 
       <div class="row">
         <div class="col-md-12">
@@ -188,10 +186,10 @@ if(isset($_SESSION['username'])){
                 <table class="table table-hover table-bordered" id="sampleTable"   style="font-family:tahoma; font-size:115%">
                   <thead>
                     <tr>
-                      <th>HH ID</th>
-                      <th>Barangay</th>
-                      <th>NAME</th>
-                      <th>Remarks</th>
+                      <th>ID</th>
+                      <th>Name</th>
+                      <th>Abbreviation</th>
+                      <th>Address</th>
                    
                       <th>ACTIONS</th>
 
@@ -200,19 +198,16 @@ if(isset($_SESSION['username'])){
                   <tbody>
                   <?php 
                  
-                    $sql = "SELECT * FROM `tbl_people` ORDER BY id DESC limit 100";
+                    $sql = "SELECT * FROM `tbl_servicepro`";
                     $result = $conn->query($sql);
                     if ($result->num_rows > 0) {
                         // output data of each row
                         while($row = $result->fetch_assoc()) {
                             $id= $row["id"];
-                            $hhid = $row['hhid'];
-                            $barangay= $row['barangay'];
-                            $fname = $row['fname'];
-                            $mname  = $row['mname'];
-                            $lname = $row['lname'];
-                            $xname = $row['xname'];
-                            $sector = $row['sector'];
+                            $name = $row['name'];
+                            $abbrevname= $row['abbrevname'];
+                            $address= $row['address'];
+                            
                             
                          ?>
 
@@ -220,11 +215,12 @@ if(isset($_SESSION['username'])){
 
       
                    
-                      <td><?php echo $hhid ?></td>
-                      <td><?php echo $barangay?></td>
-                      <td><?php echo $fname." ".$mname." ".$lname;?></td>
+                      <td><?php echo $id ?></td>
+                      <td><?php echo $name?></td>
+                      <td><?php echo $abbrevname ?></td>
+                       <td><?php echo $address ?></td>
+
                    
-                      <td><?php echo $sector ?></td>
                  
                    
                     
@@ -237,7 +233,7 @@ if(isset($_SESSION['username'])){
  <!--EDIT <a href="#edit<?php echo $id;?>" data-toggle="modal"><button type='button' class='btn btn-warning btn-sm'>
   <i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></a>-->
 
-  <a href="#delete<?php echo $hhid; ?>" data-toggle="modal"><button type='button' class='btn btn-danger btn-sm'><i class="fa fa-trash-o" aria-hidden="true"></i></i>
+  <a href="#delete<?php echo $id; ?>" data-toggle="modal"><button type='button' class='btn btn-danger btn-sm'><i class="fa fa-trash-o" aria-hidden="true"></i></i>
   </button></a>
 </td>
 </tr>
@@ -246,8 +242,6 @@ if(isset($_SESSION['username'])){
 
                
 
-                 
-   <?php  ?>
    
           <!--EDIT EDIT EDIT EDIT EDIT Large modal -->
 
@@ -271,10 +265,10 @@ if(isset($_SESSION['username'])){
                                     </div>
                                     <div class="modal-body">
                                         <input type="hidden" name="delete_id" value="<?php echo $id; ?>">
-                                        <div class="alert alert-danger">YOU ARE NOT ALLOWED TO DELETE <?php echo $id; ?> <strong>
+                                        <div class="alert alert-danger">ARE YOU SURE YOU WANT TO DELETE <?php echo $id; ?> <strong>
                                                 <?php echo $item_name; ?></strong> </div>
                                         <div class="modal-footer">
-                                            <button type="submit" disabled name="delete" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> YES</button>
+                                            <button type="submit" name="delete" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> YES</button>
                                             <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove-circle"></span> NO</button>
                                         </div>
                                     </div>
@@ -283,11 +277,6 @@ if(isset($_SESSION['username'])){
                         </div>
                     </div>
 
-<?php 
-                  
-
-                
-                         ?>
 
 
 
@@ -427,17 +416,17 @@ if(isset($_SESSION['username'])){
                  </form>
 
 
-<?php }
+<?php }}
 
-   if(isset($_POST['delete'])){
+   if(isset($_POST['delete'])){ 
                             // sql to delete a record
                             $delete_id = $_POST['delete_id'];
-                            $sql = "DELETE FROM tbl_customer     WHERE id='$delete_id' ";
+                            $sql = "DELETE FROM tbl_servicepro WHERE id='$delete_id' ";
                             if ($conn->query($sql) === TRUE) {
-                                $sql = "DELETE FROM tbl_customer WHERE id='$delete_id' ";
+                                $sql = "DELETE FROM tbl_servicepro WHERE id='$delete_id' ";
                                 if ($conn->query($sql) === TRUE) {
-                                    $sql = "DELETE FROM tbl_customer WHERE id='$delete_id' ";
-                                    echo '<script>window.location.href="page1.php"</script>';
+                                    $sql = "DELETE FROM tbl_servicepro WHERE id='$delete_id' ";
+                                    echo '<script>window.location.href="servicepro.php"</script>';
                                 } else {
                                     echo "Error deleting record: " . $conn->error;
                                 }
@@ -474,85 +463,8 @@ if(isset($_POST['edit_item'])){
 
 
 
-}
- if(isset($_POST['addmember'])){
-
-                       
-                        $fname = $_POST['fname'];
-                        $mname = $_POST['mname'];
-                        $lname = $_POST['lname'];
-                        $xname = $_POST['xname'];
-                        $barangay = $_POST['barangay'];
-                        $gender = $_POST['gender'];
-                        $bday = $_POST['bday'];
-                        $pob = $_POST['pob'];
-                        $civilstat = $_POST['civilstat'];
-                        $mnumber = $_POST['mnumber'];
-                        $sector = $_POST['sector'];
-                       
-
-                      $sql = "SELECT * FROM `tbl_people` WHERE fname = '$fname' and mname='$mname' and lname = '$lname' and xname = '$xname' and bday = '$bday'";
-                    $result = $conn->query($sql);
-                    if ($result->num_rows > 0) {
-                        // output data of each row
-                    $row = $result->fetch_assoc();
-                           $hhidcheck = $row['hhid'];
-                            echo "<script type='text/javascript'>alert(\"Client Recort already exists $hhid\")</script>";
-           echo "<script>window.location.href='household.php?id=$hhidcheck'</script>";
-
-}
-                    $sql = "SELECT * from tbl_household ORDER BY hhid DESC limit 1";
-                    $result = $conn->query($sql);
-                    $result->num_rows;
-                        // output data of each row
-                    $row = $result->fetch_assoc();
-                           $getlastid = $row['hhid'];
-                          
-
-$autohhid = $getlastid + 1;
-                       
- $sqlc = "SELECT * from  tbl_household WHERE hhid = $autohhid";
- $resultc = $conn->query($sqlc);
-    if ($resultc->num_rows > 0) {
-
-   echo "<script type='text/javascript'>alert(\"House Hold ID already exists $autohhid\")</script>";
-           echo "<script>window.location.href='page1.php'</script>";
-              }else  {
-
- $sql = "INSERT INTO `tbl_household` (`id`, `hhid`, `add_line1`, `barangay`,`encoderid`) VALUES (NULL, '$autohhid', '', '$barangay','$cidd')";
 
 
-if ($conn->query($sql) === TRUE) {  
-
-
-
- $sql = "INSERT INTO `tbl_people` (`id`, `hhid`, `lname`, `fname`, `mname`, `xname`, `gender`, `bday`, `placeofbirth`, `civilstatus`, `phone`, `sector`, `barangay`) VALUES (NULL, '$autohhid', '$lname', '$fname', '$mname', '$xname', '$gender', '$bday', '$pob', '$civilstat', '$mnumber', '$sector', '$barangay')";
-
-
-if ($conn->query($sql) === TRUE) {  
-
-  
-   echo "<script type='text/javascript'>alert(\"Successfully added record id is : $autohhid \")</script>";
-           echo "<script>window.location.href='page1.php'</script>";
-
-
-}
-
-         
-      
-}}}
-///aaaaaaaaaaaaaaaaaaaaaaa search
-if(isset($_POST['searchid'])){
-                        $lname = $_POST['lname'];
-                                  
-  header('location:page1search.php?id='.$lname);
-
-
-  // echo "<script type='text/javascript'>alert(\"Searchingscript>";
-         //  echo "<script>window.location.href='page1.php?id=$hhid'</script>";
-         
-       
-}
 ?>           
 
 <!-- Large modal -->
@@ -570,9 +482,10 @@ if(isset($_POST['searchid'])){
       </div>
       <div class="modal-body">
       <label>Search </label> 
-     
+      <input class="form-control" type="text" name="fname" placeholder ="First Name" required>
+      <input class="form-control" type="text" name="mname" placeholder ="Middle Name">
       <input class="form-control" type="text" name="lname" placeholder ="Last Name" required>
-      
+      <input class="form-control" type="text" name="xname" placeholder ="xname">
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -587,127 +500,32 @@ if(isset($_POST['searchid'])){
    
        <div class="modal-content">
           <div class="tile">
-            <h3 class="tile-title">Add a member</h3>
+            <h3 class="tile-title">Add Service Provider Details</h3>
             <div class="tile-body">
                 <form method="post" role="form">
               <div class="row">
                 <div class="form-group col-md-3">
-                  <label class="control-label">Last Name</label>
-                  <input class="form-control" type="text" placeholder="Last Name" name="lname">
+                  <label class="control-label">Name</label>
+                  <input class="form-control" type="text" placeholder="Name" name="name">
                 </div>
                  <div class="form-group col-md-3">
-                  <label class="control-label">First Name</label>
-                  <input class="form-control" type="text" placeholder="First Name" name="fname">
+                  <label class="control-label">Abbreviation Name</label>
+                  <input class="form-control" type="text" placeholder="Abbreviation Name" name="abbrevname">
                 </div>
                  <div class="form-group col-md-3">
-                  <label class="control-label">Middle Name</label>
-                  <input class="form-control" type="x" placeholder="Middle Name" name="mname">
+                  <label class="control-label">Address</label>
+                  <input class="form-control" type="x" placeholder="Address" name="address">
                 </div>
-                 <div class="form-group col-md-3">
-                  <label class="control-label">Ext Name</label>
-                  <input class="form-control" type="x" placeholder="Extension Name" name="xname">
-                </div>
+                
               </div>
-                <div class="row">
-                <div class="form-group col-md-3">
-                  <label class="control-label">Barangay</label>
-                  <select class="form-control" id="barangay" name="barangay" required>
-                  <option disabled selected>Select Here</option>
-
-                  <option value="APOLLO">APOLLO</option>
-                  <option value="BALUT">BALUT</option>
-                  <option value="BAYAN">BAYAN</option>
-                  <option value="BAGONG PARAISO">BAGONG PARAISO</option>
-                  <option value="CALERO">CALERO</option>
-                  <option value="CENTRO I">CENTRO I</option>
-                  <option value="CENTRO II">CENTRO II</option>
-                  <option value="DOÑA">DOÑA</option>
-                  <option value="KABALUTAN">KABALUTAN</option>
-                  <option value="KAPARANGAN">KAPARANGAN</option>
-                  <option value="MARIA FE">MARIA FE</option>
-                  <option value="MASANTOL">MASANTOL</option>
-                  <option value="MULAWIN">MULAWIN</option>
-                  <option value="PACAR">PACAR</option>
-                  <option value="PAGASA">PAGASA</option>
-                  <option value="PALIHAN">PALIHAN</option>
-                  <option value="PANTALAN BAGO">PANTALAN BAGO</option>
-                  <option value="PANTALAN LUMA">PANTALAN LUMA</option>
-                  <option value="PARANG PARANG">PARANG PARANG</option>
-                  <option value="PUKSUAN">PUKSUAN</option>
-                  <option value="SIBUL">SIBUL</option>
-                  <option value="SILAHIS">SILAHIS</option>
-                  <option value="TAGUMPAY">TAGUMPAY</option>
-                  <option value="TALA">TALA</option>
-                  <option value="TALIMUNDOC">TALIMUNDOC</option>
-                  <option value="TAPULAO">TAPULAO</option>
-                  <option value="TENEJERO">TENEJERO</option>
-                  <option value="TUGATOG">TUGATOG</option>
-                  <option value="WAWA">WAWA</option>
-                  </select>
-
-                </div>
-                 <div class="form-group col-md-3">
-                  <label class="control-label">Gender</label>
-                  <select class="form-control" id="gender" name="gender" required>
-                  <option>-Select here-</option>
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                </select>
-                </div>
-                 <div class="form-group col-md-3">
-                  <label class="control-label">Birthday</label>
-                  <input class="form-control" type="date" placeholder="BDAY" name="bday">
-                </div>
-              </div>
-
-                  <div class="row">
-                <div class="form-group col-md-3">
-                  <label class="control-label">Place of Birth</label>
-                  <input class="form-control" type="text" placeholder="Place of Birth" name="pob">
-                </div>
-                 <div class="form-group col-md-3">
-                  <label class="control-label">Civil Status</label>
-                  <select class="form-control" id="civilstat" name="civilstat" required>
-                  <option>-Select here-</option>
-                  <option value="Single">1 - Single</option>
-                  <option value="Married">2 - Married</option>
-                  <option value="Widowed">3 - Widowed</option>
-                  <option value="Divorced/Separated">4 - Divorced/Separated</option>
-                  <option value="Common-law/Live-in">5 - Common-law/Live-in</option>
-                </select>
-                </div>
-                 <div class="form-group col-md-3">
-                  <label class="control-label">Contact Number</label>
-                  <input class="form-control" type="text"  maxlength="11" placeholder="Mobile Number" name="mnumber">
-                </div>
-              </div>
-
-              <div class="row">
-               <div class="form-group col-md-3">
-                  <label class="control-label">Sector</label>
-                  <select class="form-control" id="civilstat" name="sector" required>
-                  <option>-Select here-</option>
-                  <option value="CHILDREN">CHILDREN</option>
-                  <option value="FAMILY HEAD">FAMILY HEAD</option>
-                  <option value="PWD">PWD</option>
-                  <option value="SENIOR">SENIOR</option>
-                  <option value="SOLO PARENT">SOLO PARENT</option>
-                  <option value="WOMEN">WOMEN</option>
-                  <option value="4PS">4PS</option>
-                  <option value="YOUTH">YOUTH</option>
-                  <option value="ADULT">ADULT</option>
-
-                </select>
-                </div>
-              
-              </div>
+               
              
                   
                 </div>
           
 
 
-             <button class="btn btn-primary" name="addmember" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Add</button>
+             <button class="btn btn-primary" name="addservicepro" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Add</button>
                </form>
         
         </div></div></div>
@@ -723,7 +541,37 @@ if(isset($_POST['searchid'])){
 
    
 
+<?php 
 
+
+ if(isset($_POST['addservicepro'])){
+
+                       
+                        $name = $_POST['name'];
+                        $abbrevname = $_POST['abbrevname'];
+                        $address = $_POST['address'];
+                        
+
+
+
+ $sql = "INSERT INTO `tbl_servicepro` (`id`, `name`, `abbrevname`, `address`) VALUES (NULL, '$name', '$abbrevname', '$address')";
+
+
+if ($conn->query($sql) === TRUE) {  
+
+  
+   echo "<script type='text/javascript'>alert(\"Successfully added service provider \")</script>";
+           echo "<script>window.location.href='servicepro.php'</script>";
+
+
+
+
+         }}
+
+
+
+
+?>
 
    
 

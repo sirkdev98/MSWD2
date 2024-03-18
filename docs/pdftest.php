@@ -72,6 +72,15 @@ if ($conn->connect_error) {
 
 }}
 
+$sql = "SELECT * from tbl_servicepro where abbrevname = '$servicepro'";
+                    $result = $conn->query($sql);
+                    if ($result->num_rows > 0) {
+                        // output data of each row
+                        while($row = $result->fetch_assoc()) {
+                            $id  = $row['id'];
+                            $name  = $row['name'];
+                            $serviceproaddress =$row['address'];
+}}
 $formattednum = number_format($appamount,2);
 
 $f = new NumberFormatter("en", NumberFormatter::SPELLOUT);
@@ -130,182 +139,17 @@ $pdf ->Cell(155,10,'',0,0);
 $pdf ->Cell(5,10,$cdate,0,1);
 $pdf ->Cell(50,10,'',0,1);
 
-if ($servicepro == 'ODH') {
+
 
 
 
 $pdf->SetFont('Arial', 'B', 12);
 $pdf ->Cell(10,10,'',0,0);
-$pdf ->Cell(55,5,'ORANI DISTRICT HOSPITAL',0,1);
+$pdf ->Cell(55,5,$name,0,1);
 $pdf->SetFont('Arial', '', 10);
 $pdf ->Cell(10,10,'',0,0);
-$pdf ->Cell(65,5,'Lourdes St., Ma. Fe',0,1);
+$pdf ->Cell(65,5,$serviceproaddress,0,1);
 $pdf ->Cell(10,10,'',0,0);
-$pdf ->Cell(50,5,'Orani, Bataan',0,1);
-
-
-}else if($servicepro =='TGP') {
-
-
-
-
-$pdf->SetFont('Arial', 'B', 12);
-$pdf ->Cell(10,10,'',0,0);
-$pdf ->Cell(55,5,'THE GENERICS PHARMACY',0,1);
-$pdf->SetFont('Arial', '', 12);
-$pdf ->Cell(10,10,'',0,0);
-$pdf ->Cell(65,5,'Centro I Orani, Bataan',0,1);
-$pdf ->Cell(10,10,'',0,0);
-$pdf ->Cell(50,5,'',0,1);
-
-}else if($servicepro =='De Guzman') {
-
-
-
-
-$pdf->SetFont('Arial', 'B', 12);
-$pdf ->Cell(10,10,'',0,0);
-$pdf ->Cell(55,5,'DE GUZMAN PHARMACY',0,1);
-$pdf->SetFont('Arial', '', 12);
-$pdf ->Cell(10,10,'',0,0);
-$pdf ->Cell(65,5,'Mulawin Orani, Bataan',0,1);
-$pdf ->Cell(10,10,'',0,0);
-$pdf ->Cell(50,5,'',0,1);
-
-}else if($servicepro =='CDBDCC') {
-
-
-$pdf->SetFont('Arial', 'B', 12);
-$pdf ->Cell(10,10,'',0,0);
-$pdf ->Cell(55,5,'CLINICA DE BATAAN DIAGNOSTIC CENTER CORP',0,1);
-$pdf->SetFont('Arial', '', 12);
-$pdf ->Cell(10,10,'',0,0);
-$pdf ->Cell(65,5,'t National Road, Parang-parang',0,1);
-$pdf ->Cell(10,10,'',0,0);
-$pdf ->Cell(50,5,'Orani, Bataan',0,1);
-
-}else if($servicepro =='SPECTRO') {
-
-
-$pdf->SetFont('Arial', 'B', 12);
-$pdf ->Cell(10,10,'',0,0);
-$pdf ->Cell(55,5,'SPECTRO DIAGNOSTIC LABORATORY',0,1);
-$pdf->SetFont('Arial', '', 12);
-$pdf ->Cell(10,10,'',0,0);
-$pdf ->Cell(65,5,'National Road, Centro I',0,1);
-$pdf ->Cell(10,10,'',0,0);
-$pdf ->Cell(50,5,'Orani, Bataan',0,1);
-}
-else if($servicepro =='BATOL-CANLAS') {
-
-
-$pdf->SetFont('Arial', 'B', 12);
-$pdf ->Cell(10,10,'',0,0);
-$pdf ->Cell(55,5,'BATOL-CANLAS DIAGNOSTIC CENTER',0,1);
-$pdf->SetFont('Arial', '', 12);
-$pdf ->Cell(10,10,'',0,0);
-$pdf ->Cell(65,5,'National Road, Centro I',0,1);
-$pdf ->Cell(10,10,'',0,0);
-$pdf ->Cell(50,5,'Orani, Bataan',0,1);
-}
-else if($servicepro =='Tongol') {
-
-
-$pdf->SetFont('Arial', 'B', 12);
-$pdf ->Cell(10,10,'',0,0);
-$pdf ->Cell(55,5,'TONGOL FUNERAL SERVICES',0,1);
-$pdf->SetFont('Arial', '', 12);
-$pdf ->Cell(10,10,'',0,0);
-$pdf ->Cell(65,5,'National Road, Ma. Fe',0,1);
-$pdf ->Cell(10,10,'',0,0);
-$pdf ->Cell(50,5,'Orani, Bataan',0,1);
-
-
-}else if($servicepro =='Punzalan') {
-
-
-$pdf->SetFont('Arial', 'B', 12);
-$pdf ->Cell(10,10,'',0,0);
-$pdf ->Cell(55,5,'D.C. PUNZALAN FUNERAL SERVICES',0,1);
-$pdf->SetFont('Arial', '', 12);
-$pdf ->Cell(10,10,'',0,0);
-$pdf ->Cell(65,5,'National Road, Parang-Parang',0,1);
-$pdf ->Cell(10,10,'',0,0);
-$pdf ->Cell(50,5,'Orani, Bataan',0,1);
-
-}
-else if($servicepro =='BGH') {
-
-
-$pdf->SetFont('Arial', 'B', 12);
-$pdf ->Cell(10,10,'',0,0);
-$pdf ->Cell(55,5,'BATAAN GENERAL HOSPITAL AND MEDICAL CENTER',0,1);
-$pdf->SetFont('Arial', '', 12);
-$pdf ->Cell(10,10,'',0,0);
-$pdf ->Cell(65,5,'Manahan Street, Tenejero',0,1);
-$pdf ->Cell(10,10,'',0,0);
-$pdf ->Cell(50,5,'Balanga City, Bataan',0,1);
-}
-
-else if($servicepro =='ICMC') {
-
-
-$pdf->SetFont('Arial', 'B', 12);
-$pdf ->Cell(10,10,'',0,0);
-$pdf ->Cell(55,5,'ISAAC & CATALINA MEDICAL CENTER',0,1);
-$pdf->SetFont('Arial', '', 12);
-$pdf ->Cell(10,10,'',0,0);
-$pdf ->Cell(65,5,'Calero Street, Ibayo',0,1);
-$pdf ->Cell(10,10,'',0,0);
-$pdf ->Cell(50,5,'Balanga City, Bataan',0,1);
-}else if($servicepro =='BDHMC') {
-
-
-$pdf->SetFont('Arial', 'B', 12);
-$pdf ->Cell(10,10,'',0,0);
-$pdf ->Cell(55,5,'BATAAN DOCTORS HOSPITAL AND MEDICAL CENTER',0,1);
-$pdf->SetFont('Arial', '', 12);
-$pdf ->Cell(10,10,'',0,0);
-$pdf ->Cell(65,5,'Cuaderno St., Dona Francisca Subdivision',0,1);
-$pdf ->Cell(10,10,'',0,0);
-$pdf ->Cell(50,5,'Balanga City, Bataan',0,1);
-}else if($servicepro =='OMP') {
-
-
-$pdf->SetFont('Arial', 'B', 12);
-$pdf ->Cell(10,10,'',0,0);
-$pdf ->Cell(55,5,'Orani Memorial Park',0,1);
-$pdf->SetFont('Arial', '', 12);
-$pdf ->Cell(10,10,'',0,0);
-$pdf ->Cell(65,5,'Orani Bataan',0,1);
-$pdf ->Cell(10,10,'',0,0);
-$pdf ->Cell(50,5,'',0,1);
-
-}else if($servicepro =='ST. Joseph') {
-
-
-$pdf->SetFont('Arial', 'B', 12);
-$pdf ->Cell(10,10,'',0,0);
-$pdf ->Cell(55,5,'BATAAN ST. JOSEPH HOSPITAL & MEDICAL CENTER CORP.',0,1);
-$pdf->SetFont('Arial', '', 12);
-$pdf ->Cell(10,10,'',0,0);
-$pdf ->Cell(65,5,'Don Manuel Banzon Avenue, Doña Francisca Subd.',0,1);
-$pdf ->Cell(10,10,'',0,0);
-$pdf ->Cell(50,5,'Balanga City, Bataan',0,1);
-}
-
-else if($servicepro =='JEC PHARMACY') {
-
-
-$pdf->SetFont('Arial', 'B', 12);
-$pdf ->Cell(10,10,'',0,0);
-$pdf ->Cell(55,5,'JEC PHARMACY',0,1);
-$pdf->SetFont('Arial', '', 12);
-$pdf ->Cell(10,10,'',0,0);
-$pdf ->Cell(65,5,'Barangay Mulawin',0,1);
-$pdf ->Cell(10,10,'',0,0);
-$pdf ->Cell(50,5,'Orani, Bataan',0,1);
-}
 
 
 

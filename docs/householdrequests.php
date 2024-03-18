@@ -137,6 +137,7 @@ $hhid = $_GET['id'];
             <li><a class="treeview-item" href="page1.php"><i class="icon fa fa-circle-o"></i>Beneficiary Enrollment</a></li>
 
                 <li><a class="treeview-item active" href="householdrequests.php"><i class="icon fa fa-circle-o"></i>Transactions</a></li>
+                <li><a class="treeview-item" href="servicepro.php"><i class="icon fa fa-circle-o"></i>Service Providers</a></li>
 
              
         
@@ -362,7 +363,7 @@ $hhid = $_GET['id'];
                   <tbody>
                     <?php 
                   
-                    $sql = "SELECT * from assistance";
+                    $sql = "SELECT * from assistance ORDER BY id desc limit 70";
                     $result = $conn->query($sql);
                     if ($result->num_rows > 0) {
                         // output data of each row
@@ -1041,25 +1042,10 @@ if(isset($_POST['edit_assistance'])){
                         $appamount =$_POST['appamount'];
 
 
-                    $sqlget = "SELECT tbl_household.hhid, tbl_people.relationship, tbl_people.fname,tbl_household.barangay, tbl_people.mname, tbl_people.lname FROM tbl_household INNER JOIN tbl_people ON tbl_people.hhid= tbl_household.hhid WHERE tbl_people.id= '$client'";
                     
-
-
-
-                    $result = $conn->query($sqlget);
-                    if ($result->num_rows > 0) {
-                        // output data of each row
-              $row = $result->fetch_assoc();
-                            $selectedhhid = $row['hhid'];
-                             $relationship = $row['relationship'];
-                              $barangay = $row['barangay'];
-                        
-
-                        
-}
               
 
- $sql = "UPDATE `assistance` SET `status` = 'approved',`cdate` = '$date', `lname` = '$lname', `fname` = '$fname', `mname` = '$mname', `relationship` = '$relationship', `Barangay` = '$barangay', `reqservice` = '$reqservice', `reqamount` = '$reqamount', `tos` = '$type', `servicepro` = '$servicepro', `type` = '$burialorillness', `typeofillness` = '$typeofillness',`appamount` = '$appamount', `category` = '$category' WHERE `assistance`.`id` = '$edit'";
+ $sql = "UPDATE `assistance` SET `status` = 'approved',`cdate` = '$date', `lname` = '$lname', `fname` = '$fname', `mname` = '$mname', `reqservice` = '$reqservice', `reqamount` = '$reqamount', `tos` = '$type', `servicepro` = '$servicepro', `type` = '$burialorillness', `typeofillness` = '$typeofillness',`appamount` = '$appamount', `category` = '$category' WHERE `assistance`.`id` = '$edit'";
 
 
 

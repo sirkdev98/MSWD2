@@ -428,7 +428,7 @@ $hhid = $_GET['id'];
                 </div>
                 <div class="form-group col-md-3">
                   <label class="control-label">Client Relationship w/ Bene</label>
-                  <input class="form-control" type="x" placeholder="Relationship" name="relpost" >
+                  <input class="form-control" type="x" placeholder="Relationship" name="rel" >
                 </div>
               </div>
                 <div class="row">
@@ -440,6 +440,7 @@ $hhid = $_GET['id'];
  <option value="Hospital Bill">Hospital Bill</option>
   <option value="Medicines">Medicines</option>
   <option value="Laboratory">Laboratory</option>
+   <option value="Diagnostic">Diagnostic</option>
   <option value="Hemodialysis">Hemodialysis</option>
   <option value="2D Echo">2D Echo</option>
   <option value="Animal Bite">Animal Biten</option>
@@ -466,27 +467,25 @@ $hhid = $_GET['id'];
                 </div>
                   <div class="form-group col-md-3">
                   <label class="control-label">Service Provider</label>
-                  
- <select class="form-control" id="reqservice" name="servicepro" required>
- <option value=""></option>
- <option value="TGP">TGP</option>
-  <option value="De Guzman">De Guzman</option>
-  <option value="Punzalan">Punzalan</option>
-  <option value="Tongol">Tongol</option>
-  <option value="ODH">ODH</option>
-  <option value="CDBDCC">CLINICA DE BATAAN DIAGNOSTIC CENTER CORP</option>
-  <option value="SPECTRO">SPECTRO DIAGNOSTIC LABORATORY</option>
-  <option value="BATOL-CANLAS">BATOL-CANLAS DIAGNOSTIC CENTER</option>
-  <option value="BDHMC">Bataan Doctors</option>
-  <option value="BGH">BGH</option>
-  <option value="ICMC">ICMC</option>
-  <option value="ST. Joseph">ST. Joseph</option>
-  <option value="OMP">Orani Memorial Park</option>
-  <option value="JEC PHARMACY">JEC PHARMACY</option>
-  <option value="OTHERS">OTHERS</option>
-  
-                </select>
 
+                    <select class="form-control" id="reqservice" name="servicepro" required>
+
+                      <option value="" disabled selected>SELECT SERVICE PROVIDER</option>
+                    <?php
+                      $sql = "SELECT `abbrevname` FROM tbl_servicepro ORDER BY abbrevname ASC";
+                       $result = $conn->query($sql);
+                      if($result->num_rows> 0){
+                         $options= mysqli_fetch_all($result, MYSQLI_ASSOC);
+                           }
+                           foreach ($options as $option) {
+  ?>
+    <option value="<?php echo $option['abbrevname']; ?>"><?php echo $option['abbrevname']; ?> </option>
+    <?php 
+    }
+                    ?>
+                    
+                    </select>
+                  
                 </div>
 <div class="form-group col-md-3">
 <label class="control-label">Type</label>
@@ -1068,14 +1067,14 @@ if(isset($_POST['edit_assistance'])){
               $row = $result->fetch_assoc();
                             $selectedhhid = $row['hhid'];
                             
-                              $barangay = $row['barangay'];
+                              $hhbarangay = $row['barangay'];
                         
 
                         
 }
               
 
- $sql = "UPDATE `assistance` SET `cdate` = '$date', `lname` = '$lname', `fname` = '$fname', `mname` = '$mname', `xname` = '$xname',`relationship` = '$rel', `Barangay` = '$barangay', `reqservice` = '$reqservice', `reqamount` = '$reqamount', `appservice` = '$appservice', `appamount` = '$appamount', `tos` = '$tos', `servicepro` = '$servicepro', `type` = '$type', `typeofillness` = '$typeofillness', `category` = '$category', `status` = '$status', `notes` = '$notes', `clientfname` = '$cfname', `clientmname` = '$cmname', `clientlname` = '$clname', `clientxname` = '$cxname' WHERE `assistance`.`id` ='$editid'";
+ $sql = "UPDATE `assistance` SET `cdate` = '$date', `lname` = '$lname', `fname` = '$fname', `mname` = '$mname', `xname` = '$xname',`relationship` = '$rel', `Barangay` = '$hhbarangay', `reqservice` = '$reqservice', `reqamount` = '$reqamount', `appservice` = '$appservice', `appamount` = '$appamount', `tos` = '$tos', `servicepro` = '$servicepro', `type` = '$type', `typeofillness` = '$typeofillness', `category` = '$category', `status` = '$status', `notes` = '$notes', `clientfname` = '$cfname', `clientmname` = '$cmname', `clientlname` = '$clname', `clientxname` = '$cxname' WHERE `assistance`.`id` ='$editid'";
 
 
 
@@ -1233,7 +1232,7 @@ if ($conn->query($sql) === TRUE) {
                         $cfname = $_POST['cfname'];
                         $cmname = $_POST['cmname'];
                         $cxname =$_POST['cxname'];
-                         $rel =$_POST['rel'];
+                        $rel =$_POST['rel'];
                         $date = $_POST['date'];
                         $reqservice = $_POST['reqservice'];
                         $reqamount = $_POST['reqamount'];
@@ -1244,7 +1243,7 @@ if ($conn->query($sql) === TRUE) {
                         $typeofillness= $_POST ['typeofillness'];
 
 
-                    $sqlget = "SELECT tbl_household.hhid, tbl_people.fname,tbl_household.barangay, tbl_people.mname, tbl_people.lname FROM tbl_household INNER JOIN tbl_people ON tbl_people.hhid= tbl_household.hhid WHERE tbl_people.id= '$beneid'";
+                    $sqlget = "SELECT tbl_household.hhid, tbl_people.fname,tbl_household.barangay as hhbarangay, tbl_people.mname, tbl_people.lname FROM tbl_household INNER JOIN tbl_people ON tbl_people.hhid= tbl_household.hhid WHERE tbl_people.id= '$beneid'";
                     
 
 
@@ -1255,14 +1254,16 @@ if ($conn->query($sql) === TRUE) {
               $row = $result->fetch_assoc();
                             $selectedhhid = $row['hhid'];
                              
-                              $barangay = $row['barangay'];
+                              $hhbarangay = $row['hhbarangay'];
                         
 
-                        
-}
+ 
+
+
      
 
- $sql = "INSERT INTO `assistance` (`id`, `hhid`, `clientid`, `cdate`, `lname`, `fname`, `mname`,`xname`,`relationship`,`Barangay`, `reqservice`, `reqamount`, `appservice`, `appamount`, `tos`, `servicepro`, `type`,`typeofillness`, `category`, `status`, `notes`, `clientfname`, `clientmname`, `clientlname`, `clientxname`)VALUES (NULL, '$id','$beneid', '$date', '$lname', '$fname', '$mname','$xname','$rel','$barangay', '$reqservice', '$reqamount', '', '', '$type', '$servicepro', '$burialorillness','$typeofillness','$category', 'pending', '','$cfname', '$cmname', '$clname', '$cxname')";
+ $sql = "INSERT INTO `assistance` (`id`, `hhid`, `clientid`, `cdate`, `lname`, `fname`, `mname`,`xname`,`relationship`,`Barangay`, `reqservice`, `reqamount`, `appservice`, `appamount`, `tos`, `servicepro`, `type`,`typeofillness`, `category`, `status`, `notes`, `clientfname`, `clientmname`, `clientlname`, `clientxname`)VALUES (NULL, '$id','$beneid', '$date', '$lname', '$fname', '$mname','$xname','$rel','$hhbarangay', '$reqservice', '$reqamount', '', '', '$type', '$servicepro', '$burialorillness','$typeofillness','$category', 'pending', '','$cfname', '$cmname', '$clname', '$cxname')";
+
 
  
 
@@ -1270,12 +1271,16 @@ if ($conn->query($sql) === TRUE) {
 
 if ($conn->query($sql) === TRUE) {  
 
-   echo "<script type='text/javascript'>alert(\"Successfully added  \")</script>";
+   echo "<script type='text/javascript'>alert(\"Successfully added\")</script>";
            echo "<script>window.location.href='household.php?id=$hhid'</script>"; 
          }  else{
 
- echo "<script>window.location.href='page1.php'</script>";
+          echo $conn->error;
 }
+}else{
+ echo "<script type='text/javascript'>alert(\"Connection failed please contanct MIS\")</script>";
+
+}                       
 }
 
 if(isset($_POST['add_assistance'])){
@@ -1305,14 +1310,14 @@ if(isset($_POST['add_assistance'])){
               $row = $result->fetch_assoc();
                             $selectedhhid = $row['hhid'];
                              $relationship = $row['relationship'];
-                              $barangay = $row['barangay'];
+                              $hhbarangay = $row['barangay'];
                         
 
                         
 }
               
 
- $sql = "INSERT INTO `assistance` (`id`, `hhid`, `clientid`, `cdate`, `lname`, `fname`, `mname`, `relationship`, `Barangay`, `reqservice`, `reqamount`, `appservice`, `appamount`, `tos`, `servicepro`, `type`, `category`, `status`, `notes`)VALUES (NULL, '$id','$client', '$date', '$lname', '$fname', '$mname', '$relationship', '$barangay', '$reqservice', '$reqamount', '', '', '$type', '$servicepro', '$burialorillness','$category', 'pending', '')";
+ $sql = "INSERT INTO `assistance` (`id`, `hhid`, `clientid`, `cdate`, `lname`, `fname`, `mname`, `relationship`, `Barangay`, `reqservice`, `reqamount`, `appservice`, `appamount`, `tos`, `servicepro`, `type`, `category`, `status`, `notes`)VALUES (NULL, '$id','$client', '$date', '$lname', '$fname', '$mname', '$relationship', '$hhbarangay', '$reqservice', '$reqamount', '', '', '$type', '$servicepro', '$burialorillness','$category', 'pending', '')";
 
 
 

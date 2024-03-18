@@ -199,8 +199,9 @@ if(isset($_SESSION['username'])){
                   </thead>
                   <tbody>
                   <?php 
+                  $lnamesearch = $_GET['id'];
                  
-                    $sql = "SELECT * FROM `tbl_people` ORDER BY id DESC limit 100";
+                    $sql = "SELECT * FROM `tbl_people` where `lname` = '$lnamesearch'";
                     $result = $conn->query($sql);
                     if ($result->num_rows > 0) {
                         // output data of each row
